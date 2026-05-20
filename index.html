@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <title>Booking</title>
+</head>
+<body>
+    <div id="header_placeholder"></div>
+    <div id="menubar_placeholder"></div>
+
+    <section class="hero_section">
+        <div class="hero_content">
+            <h1>Reserve the Extraordinary</h1>
+            <p>Private jets, historic castles and curated experiences for the discerning few.</p>
+        </div>
+
+        <form class="search_bar">
+            <div class="search_item">
+                <img src="https://i.ibb.co/7t3fDV10/bed.png" alt="search_img_bed" class="search_img">
+                <div class="input_locations_container">
+                    <input id="location_input" type="text" placeholder="Where are you going?" autocomplete="off">
+                    <div id="autocomplete_list" class="autocomplete_suggestions"></div>
+                </div>
+            </div>
+            <div class="search_item">
+                <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="search_img_calendar" class="search_img">
+                <input type="date" id="check_in" name="check_in">
+                <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="search_img_calendar" class="search_img">
+                <input type="date" id="check_out" name="check_out">
+            </div>
+            <div class="search_item" id="guests_container">
+                <img src="https://i.ibb.co/hx5WyV7z/person.png" alt="search_img_person" class="search_img">
+                <span id="guests_display">2 adults  0 childern  1 room</span>
+                <div class="guests_dropdown" id="guests_dropdown">
+                    <div class="dropdown_item">
+                        <span>Adults</span>
+                        <div class="counter">
+                            <button type="button" class="btn_counter" data-type="adults" data-action="minus">-</button>
+                            <input class="guests_input" id="counter_adults" type="number" data-type="adults" value="2" 
+                            max="999" min="1" oninput="validity.valid||(value='1');">
+                            <button type="button" class="btn_counter" data-type="adults" data-action="plus">+</button>
+                        </div>
+                    </div>
+                    <div class="dropdown_item">
+                        <span>Children</span>
+                        <div class="counter">
+                            <button type="button" class="btn_counter" data-type="children" data-action="minus">-</button>
+                            <input class="guests_input" id="counter_children" type="number" data-type="children" value="0" 
+                            max="999" min="0" oninput="validity.valid||(value='0');">
+                            <button type="button" class="btn_counter" data-type="children" data-action="plus">+</button>
+                        </div>
+                    </div>
+                    <div class="dropdown_item">
+                        <span>Rooms</span>
+                        <div class="counter">
+                            <button type="button" class="btn_counter" data-type="rooms" data-action="minus">-</button>
+                            <input class="guests_input" id="counter_rooms" type="number" data-type="rooms" value="2"
+                            max="999" min="1" oninput="validity.valid||(value='1');">
+                            <button type="button" class="btn_counter" data-type="rooms" data-action="plus">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn_search" id="btn_search">Search</button>
+        </form>
+    </section>
+
+    <main class="content_area">
+        <div class="section_header_container">
+            <div class="section_header">
+                <h2>Featured Apartments</h2>
+                <p>Exclusive penthouses and serviced residences in prime locations</p>
+            </div>
+            <div class="sort_selector">
+                <button class="btn_sort" id="active_sort"><img class="search_img" src="https://i.ibb.co/CKF3kkZP/sort-filter.png" alt="btn_img_sort"> 
+                    <span>Sort by: Recommendations</span></button>
+                <div class="sort_list" id="sort_list">
+                    <div class="sort_option" data-code="recommendations">Recommendations</div>
+                    <div class="sort_option" data-code="price">Price (highest first)</div>
+                    <div class="sort_option" data-code="rating_high_to_low">Property rating (high to low)</div>
+                    <div class="sort_option" data-code="rating_low_to_high">Property rating (low to high)</div>
+                </div>
+
+                <div class="slider_controls">
+                    <button class="btn_control prev"><img class="btn_control_img" src="https://i.ibb.co/pByk5brK/prev.png" alt="btn_control_prev"></button>
+                    <button class="btn_control next"><img class="btn_control_img" src="https://i.ibb.co/5WyfsVB6/next.png" alt="btn_control_next"></button>
+                </div>
+            </div>
+
+        </div>
+        <div class="search_result_wrapper">
+            <div class="benefits">
+
+            </div>
+
+            <div class="offers_grid">
+                <div class="default_content_offer_grid">
+                    <img src="https://i.ibb.co/n8CTYXWL/not-found-offer.png" alt="not-found-offer">
+                    <span>No offers found in this category yet.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="load_more_offers">
+                <button id="btn_show_more_offers" style="display: none;">Show more</button>
+        </div>
+    </main>
+
+    <div id="footer_root_placeholder"></div>
+
+    <div id="reg_modal_placeholder"></div>
+
+    <div id="log_modal_placeholder"></div>
+
+    <script src="js/components.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

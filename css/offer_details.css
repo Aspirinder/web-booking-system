@@ -1,0 +1,125 @@
+@import "index.css";
+
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+
+    color: #C69C6D;
+}
+
+.offer_header a{
+    display: inline-block;
+    color: var(--typical-yellow);
+    text-decoration: underline;
+    transition: all 0.3s ease;
+}
+
+.offer_header a:hover{
+    transform: scale(1.1);
+    color: var(--bright-yellow);
+}
+
+.offer_layout{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.price_big{
+    font-size: 2.5rem;
+    color: #f4c590;
+    margin: 20px 0;
+}
+
+.benefits_list{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.benefit_pill{
+    background-color: #262626;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: solid 1px rgba(198, 156, 109, 0.3);
+}
+
+.line{
+    width: 100%;
+    height: 5px;
+    background-color: #262626;
+}
+
+.slider_container{
+    position: relative;
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: var(--gray);
+    width: 800px;
+}
+
+.main_image_wrapper{
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#slider_img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.4s ease-in-out;
+}
+
+.slider_btn{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(26, 26, 26, 0.6);
+    border: 1px solid rgba(198, 156, 109, 0.5);
+    color: var(--typical-yellow);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bolder;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.main_image_wrapper:hover .slider_btn{
+    opacity: 1;
+    visibility:visible;
+}
+
+.slider_btn:hover{
+    background: var(--typical-yellow);
+    color: var(--black);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.slider_btn.prev {left: 20px;}
+.slider_btn.next {right: 20px;}
+
+.photo_counter{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--white);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
