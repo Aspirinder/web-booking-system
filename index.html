@@ -25,11 +25,11 @@
                     <div id="autocomplete_list" class="autocomplete_suggestions"></div>
                 </div>
             </div>
-            <div class="search_item">
+            <div class="search_item" id="date_container">
                 <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="search_img_calendar" class="search_img">
-                <input type="date" id="check_in" name="check_in">
+                <input type="date" id="booking_check_in" name="check_in" readonly required placeholder="dd.mm.yyyy">
                 <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="search_img_calendar" class="search_img">
-                <input type="date" id="check_out" name="check_out">
+                <input type="date" id="booking_check_out" name="check_out" readonly required placeholder="dd.mm.yyyy">
             </div>
             <div class="search_item" id="guests_container">
                 <img src="https://i.ibb.co/hx5WyV7z/person.png" alt="search_img_person" class="search_img">
@@ -110,10 +110,6 @@
     </main>
 
     <div id="footer_root_placeholder"></div>
-
-    <div id="reg_modal_placeholder"></div>
-
-    <div id="log_modal_placeholder"></div>
 
     <script src="js/components.js"></script>
     <script src="js/index.js"></script>

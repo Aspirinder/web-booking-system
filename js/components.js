@@ -21,7 +21,7 @@ const commonComponents ={
                         <div class="currency_option" data-code="EUR" data-symbol="€">EUR (€)</div>
                     </div>
                 </div>
-                <button class="btn_lang"><img src="https://i.ibb.co/jPcJxhHG/icons8-poland-96.png" alt="btn_img_lang" class="btn_img_menu"></button>
+                <button class="btn_lang"><img src="https://i.ibb.co/1JQCkHwj/english.png" alt="btn_img_lang" class="btn_img_menu"></button>
                 <button class="btn_menu"><img src="https://i.ibb.co/RTGjS8gy/login.png" alt="btn_img_login" class="btn_img_menu"><span>Log In</span></button>
                 <button class="btn_menu"><img src="https://i.ibb.co/nMJdXbPM/signin.png" alt="btn_img_signup" class="btn_img_menu"><span>Sign Up</span></button>
                 <button class="btn_menu" style="display: none;"><img src="https://i.ibb.co/hx5WyV7z/person.png" alt="btn_img_user" class="btn_img_menu"><span>User</span></button>
@@ -58,39 +58,6 @@ const commonComponents ={
                 <img src="https://i.ibb.co/qLp3b6Df/airplane.png" alt="btn_img_menu_airplane" class="btn_img_menu">
                 <span>Airplanes</span>
             </button>
-        </div>
-        `,
-
-    // Authentication Modals (Login & Registration)
-    regModal: `
-        <div id="reg_modal" class="modal">
-            <div class="modal_content">
-                <span class="close_modal">&times;</span>
-                <h2 class="modal_title">Sign Up</h2>
-                <form id="reg_form">
-                    <input type="text" id="reg_username" placeholder="Username" required>
-                    <input type="text" id="reg_fullname" placeholder="Name and surname" required>
-                    <input type="email" id="reg_email" placeholder="Email" required>
-                    <input type="password" id="reg_password" placeholder="Password" required>
-                    <button type="submit" class="btn_submit">Create account</button>
-                </form>
-                <p class="result" id="reg_result"></p>
-                <p class="reg_switch">Already have an account? <a href="#" id="switch_to_log">Log In</a></p>
-            </div>
-        </div>
-        `,
-    logModal: `
-        <div id="log_modal" class="modal">
-            <div class="modal_content">
-                <span class="close_modal">&times;</span>
-                <h2 class="modal_title">Sign In</h2>
-                <form id="log_form">
-                    <input type="email" id="log_email" placeholder="Email" required>
-                    <input type="password" id="log_password" placeholder="Password" required>
-                    <button type="submit" class="btn_submit">Sign In</button>
-                </form>
-                <p class="reg_switch">Don't have an account? <a href="#" id="switch_to_reg">Sign Up</a></p>
-            </div>
         </div>
         `,
 
@@ -132,7 +99,7 @@ const commonComponents ={
                 </div>
             </div>
         </footer>
-        `
+        `,
 }
 /*
     Common UI Initialization.
@@ -149,14 +116,6 @@ function initCommonUI(){
 
     // Logo
     const logo = document.querySelector('.logo');
-
-    // Modals
-    const logModal = document.getElementById('log_modal');
-    const regModal = document.getElementById('reg_modal');
-    const regResult = document.getElementById('reg_result');
-    const closeModals = document.querySelectorAll('.close_modal');
-    const switchToLog = document.getElementById('switch_to_log');
-    const switchToReg = document.getElementById('switch_to_reg');
 
     // Footer categories
     const footerCategories = document.querySelectorAll('.footer_category');
@@ -202,41 +161,8 @@ function initCommonUI(){
     });
 
     // Modal Window Visibility Controls
-    signUpBtn.addEventListener('click', () => regModal.style.display = 'block');
-    signInBtn.addEventListener('click', () => logModal.style.display = 'block');
-
-    // Toggle Between Login/Register
-    switchToLog.addEventListener('click', (e) => {
-        e.preventDefault(); // Stop Hash Navigation
-        regModal.style.display = 'none';
-        logModal.style.display = 'block';
-    });
-
-    switchToReg.addEventListener('click', (e) => {
-        e.preventDefault();
-        logModal.style.display = 'none';
-        regModal.style.display = 'block';
-    });
-
-    // Close any Open Modal by Clicking the Cross Icon
-    closeModals.forEach(button => {
-        button.addEventListener('click', () => {
-        const parent = button.parentElement.parentElement; // Traverses Up to the .modal container
-        parent.style.display = 'none';
-        })
-    });
-
-    // Registration Form Submission
-    document.getElementById('reg_form').addEventListener('submit', async(e) => {
-        e.preventDefault();
-        registration();
-    });
-
-    // Login Form Submission
-    document.getElementById('log_form').addEventListener('submit', async(e) => {
-        e.preventDefault();
-        login();
-    });
+    signUpBtn.addEventListener('click', () => document.getElementById('reg_modal').style.display = 'block');
+    signInBtn.addEventListener('click', () => document.getElementById('log_modal').style.display = 'block');
 
     // Footer Category Logic
     footerCategories.forEach(footer =>{
@@ -255,6 +181,337 @@ function initCommonUI(){
     });
 }
 
+class CustomCalendar{
+    constructor(inputCheckInId, inputCheckOutId, bookedPeriods =[], onRangeSelected= []){
+        this.inputCheckIn = document.getElementById(inputCheckInId);
+        this.inputCheckOut = document.getElementById(inputCheckOutId);
+        this.bookedPeriods = bookedPeriods;
+        this.onRangeSelected = onRangeSelected;
+
+        this.currentDate = new Date();
+        this.selectedStart = this.inputCheckIn.value ? this.inputCheckIn.value : null;
+        this.selectedEnd = this.inputCheckOut.value ? this.inputCheckOut.value : null;
+
+        this.initDOM();
+        this.initEvents();
+    }
+
+    initDOM(){
+        if(document.getElementById('custom_calendar_modal')) return;
+        this.modal = document.createElement('div');
+        this.modal.className = "custom_calendar_modal";
+        this.modal.innerHTML = `
+            <div class="calendar_box">
+                <span class="close_calendar">&times;</span>
+                <div class="calendar_header">
+                    <button type="button" id="btn_prev_month">&lt;</button>
+                    <h3 id="calendar_month_year">Month Year</h3>
+                    <button type="button" id="btn_next_month">&gt;</button>
+                </div>
+                <div class="calendar_weekdays">
+                    <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                </div>
+                <div>
+                    <div id="calendar_days" class="calendar_days_grid"></div>
+                    <div class="calendar_footer_info">
+                        <div class="legend_block">
+                            <span class="legend_item booked"></span>
+                            <span class="legend_text">Already booked</span>
+                        </div>
+                        <div class="legend_block">
+                            <span class="legend_item selected"></span>
+                            <span class="legend_text">Your selection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        document.body.appendChild(this.modal);
+
+        this.daysContainer = document.getElementById('calendar_days');
+        this.monthYearLabel = document.getElementById('calendar_month_year');
+        this.prevMonthBtn = document.getElementById('btn_prev_month');
+        this.nextMonthBtn = document.getElementById('btn_next_month');
+        this.closeBtn = this.modal.querySelector('.close_calendar');
+    }
+
+    initEvents() {
+
+        const openModal = (e) => {
+            e.stopPropagation();
+            this.selectedStart = this.inputCheckIn.value ? this.inputCheckIn.value : null;
+            this.selectedEnd = this.inputCheckOut.value ? this.inputCheckOut.value : null;
+
+            const rect = e.currentTarget.getBoundingClientRect();
+
+            this.modal.style.top = `${rect.bottom + window.scrollY + 5}px`;
+            this.modal.style.left = `${rect.left + window.scrollX}px`;
+
+            this.modal.classList.add('active');
+            this.render();
+        }
+
+        this.inputCheckIn.addEventListener('click', openModal);
+        this.inputCheckOut.addEventListener('click', openModal);
+
+        this.prevMonthBtn.addEventListener('click', (e) =>{
+                e.stopPropagation();
+                this.currentDate.setMonth(this.currentDate.getMonth() -1);
+                this.render();
+            });
+
+        this.nextMonthBtn.addEventListener('click', (e) =>{
+            e.stopPropagation();
+            this.currentDate.setMonth(this.currentDate.getMonth() +1);
+            this.render();
+        });
+
+        this.closeBtn.addEventListener('click', (e) => {e.stopPropagation(); this.modal.classList.remove('active')});
+
+        document.addEventListener('click', (e) => {
+            if (!this.modal.classList.contains('active')) return;
+            
+            if (!document.body.contains(e.target)) return;
+
+            const isClickInsideCalendar = e.target.closest('.calendar_box');
+            const isClickOnInputs = (e.target === this.inputCheckIn || e.target === this.inputCheckOut);
+
+            if (!isClickInsideCalendar && !isClickOnInputs) {
+                this.modal.classList.remove('active');
+            }
+        });
+    }
+
+    render() {
+        this.daysContainer.innerHTML = '';
+        const year = this.currentDate.getFullYear();
+        const month = this.currentDate.getMonth();
+
+        this.monthYearLabel.innerText = this.currentDate.toLocaleString('pl-PL', {month: 'long', year: 'numeric'});
+        const firstDayIndex = new Date(year, month, 1, 12, 0, 0).getDay();
+        const totalDays = new Date(year, month+1, 0, 12, 0, 0).getDate();
+
+        const today = new Date();
+        today.setHours(12,0,0,0);
+
+        for(let i = 0; i < firstDayIndex; i++){this.daysContainer.appendChild(document.createElement('div'));}
+
+        for(let day=1; day<=totalDays; day++){
+            const dayDiv = document.createElement('div');
+            dayDiv.classList.add('calendar_day');
+            dayDiv.innerText = day;
+
+            const thisDate = new Date(year, month, day, 12);
+            const thisDateStr = thisDate.toISOString().split('T')[0];
+
+            if(thisDate < today){
+                dayDiv.classList.add('disabled');
+            }else if(this.isDateBooked(thisDateStr)){
+                dayDiv.classList.add('booked_day');
+            }else{
+                if(this.selectedStart && thisDateStr === this.selectedStart) dayDiv.classList.add('selected_range');
+                if(this.selectedEnd && thisDateStr === this.selectedEnd) dayDiv.classList.add('selected_range');
+                if(this.selectedStart && this.selectedEnd && thisDateStr > this.selectedStart && thisDateStr < this.selectedEnd) dayDiv.classList.add('selected_range');
+
+                dayDiv.addEventListener('click', () => this.handleDaySelection(thisDate));
+            }
+
+            this.daysContainer.appendChild(dayDiv);
+        }
+    }
+
+    isDateBooked(thisDateStr){
+        return this.bookedPeriods.some(p => {return thisDateStr >= p.check_in && thisDateStr <= p.check_out;});
+    }
+
+    handleDaySelection(date){
+        const localStr = date.toISOString().split('T')[0];
+
+        if (!this.selectedStart || (this.selectedStart && this.selectedEnd)) {
+            this.selectedStart = localStr;
+            this.selectedEnd = null;
+            this.inputCheckIn.value = localStr;
+            this.inputCheckOut.value = '';
+        } else if (this.selectedStart && !this.selectedEnd) {
+
+            if (localStr < this.selectedStart) {
+                this.selectedStart = localStr;
+                this.inputCheckIn.value = localStr;
+            } else {
+
+                if (this.hasBookedDaysInside(this.selectedStart, date)) return;
+
+                this.selectedEnd = date;
+                this.inputCheckOut.value = localStr;
+                this.modal.classList.remove('active');
+                
+                if(this.onRangeSelected) this.onRangeSelected[this.inputCheckIn.value, this.inputCheckOut.value];
+            }
+        }
+        this.render();
+    }
+
+    hasBookedDaysInside(start, end) {
+        return this.bookedPeriods.some(p => {
+            const bStart = new Date(p.check_in);
+            return bStart > start && bStart < end;
+        });
+    }
+}
+
+class AuthManager{
+    constructor(loginFormId, regFormId){
+        this.render();
+
+        this.loginForm = document.getElementById(loginFormId);
+        this.regForm = document.getElementById(regFormId);
+        this.logModal = document.getElementById('log_modal');
+        this.regModal = document.getElementById('reg_modal');
+        this.switchToLog = document.getElementById('switch_to_log');
+        this.switchToReg = document.getElementById('switch_to_reg');
+        this.closeModals = document.querySelectorAll('.close_modal');
+
+        if(this.loginForm || this.regForm) this.initEvents();
+    }
+
+    render(){
+        if(document.getElementById('log_modal') || document.getElementById('reg_modal')) return;
+
+        const container = document.createElement('div');
+        container.id = "auth_modals_container";
+        container.innerHTML = `
+            <div id="reg_modal" class="modal">
+            <div class="modal_content">
+                <span class="close_modal">&times;</span>
+                <h2 class="modal_title">Sign Up</h2>
+                <form id="reg_form">
+                    <input type="text" id="reg_username" placeholder="Username" required>
+                    <input type="text" id="reg_fullname" placeholder="Name and surname" required>
+                    <input type="email" id="reg_email" placeholder="Email" required>
+                    <input type="password" id="reg_password" placeholder="Password" required>
+                    <button type="submit" class="btn_submit">Create account</button>
+                </form>
+                <p class="result" id="reg_result"></p>
+                <p class="reg_switch">Already have an account? <a href="#" id="switch_to_log">Log In</a></p>
+            </div>
+        </div>
+        
+        <div id="log_modal" class="modal">
+            <div class="modal_content">
+                <span class="close_modal">&times;</span>
+                <h2 class="modal_title">Sign In</h2>
+                <form id="log_form">
+                    <input type="email" id="log_email" placeholder="Email" required>
+                    <input type="password" id="log_password" placeholder="Password" required>
+                    <button type="submit" class="btn_submit">Sign In</button>
+                </form>
+                <p class="reg_switch">Don't have an account? <a href="#" id="switch_to_reg">Sign Up</a></p>
+            </div>
+        </div>
+        `;
+        document.body.appendChild(container);
+    }
+
+    initEvents(){
+        if(this.loginForm){
+            this.loginForm.addEventListener('submit', (e)=>{
+                e.preventDefault();
+                this.hadleLogin();
+            });
+        }
+
+        if(this.regForm){
+            this.regForm.addEventListener('submit', (e)=>{
+                e.preventDefault();
+                this.hadleRegistration(e);
+            })
+        }
+
+        // Toggle Between Login/Register
+        this.switchToLog.addEventListener('click', (e) => {
+            e.preventDefault(); // Stop Hash Navigation
+            this.regModal.style.display = 'none';
+            this.logModal.style.display = 'block';
+        });
+
+        this.switchToReg.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.logModal.style.display = 'none';
+            this.regModal.style.display = 'block';
+        });
+
+        // Close any Open Modal by Clicking the Cross Icon
+        this.closeModals.forEach(button => {
+            button.addEventListener('click', () => {
+                this.logModal.style.display ='none';
+                this.regModal.style.display ='none';
+
+                const regResult = document.getElementById('reg_result');
+                if(regResult) regResult.innerText = '';
+            });
+        });
+    }
+
+    // Login Logic
+    async hadleLogin(){
+        const userData = {
+            log_email: document.getElementById('log_email').value,
+            log_password: document.getElementById('log_password').value
+        };
+
+        try{
+            const response = await fetch('php/login.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(userData)
+            });
+
+            const result = await response.json();
+            if(result.status === 'success'){
+                setTimeout(() => {document.getElementById('log_modal').style.display = 'none';}, 2000);
+                updateHeaderForUser();
+            }
+        }catch(error){console.error("Log error:", error);}
+    }
+
+    // Registration Logic
+    async hadleRegistration(e){
+        // Data Transfer Object (DTO) for registration
+        const userData = {
+            reg_username: document.getElementById('reg_username').value,
+            reg_fullname: document.getElementById('reg_fullname').value,
+            reg_email: document.getElementById('reg_email').value,
+            reg_password: document.getElementById('reg_password').value,
+            reg_language: 'PLN',
+            reg_currency: document.getElementById('active_currency') ? document.getElementById('active_currency').textContent : localStorage.getItem('currentCurrency')
+        };
+
+        try{
+            const regResult = document.getElementById('reg_result');
+            const response = await fetch('php/register.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(userData)
+            });
+
+            const result = await response.json();
+            reg_result.innerText = result.message; // Display Server Response
+
+            if(result.status === 'success'){
+                e.target.reset(); // Reset Form Fields
+                regResult.style.color = '#4CAF50';
+
+                // Auto-close Modal After Delay
+                setTimeout(() => {document.getElementById('reg_modal').style.display = 'none'; regResult.innerText = '';}, 1000);
+            }else regResult.style.color = "#ff4d4d";
+        }catch(error){
+            regResult.innerText = 'Server connection failed';
+            regResult.style.color = "#ff4d4d";
+            console.error('Reg error: ', error);
+        }
+    }
+}
+
 // Check Session
 async function checkUserSession() {
     try{
@@ -264,7 +521,6 @@ async function checkUserSession() {
         if(data.isLoggedIn) updateHeaderForUser();
     }catch(error) {console.error("Auth check failed: ", error);}
 }
-
 
 // Change Interface if Logined
 async function updateHeaderForUser() {
@@ -281,63 +537,4 @@ async function updateHeaderForUser() {
 async function logout() {
     await fetch('php/logout.php');
     location.reload();
-}
-
-// Login Logic
-async function login(){
-    const userData = {
-        log_email: document.getElementById('log_email').value,
-        log_password: document.getElementById('log_password').value
-    };
-
-    try{
-        const response = await fetch('php/login.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(userData)
-        });
-
-        const result = await response.json();
-        if(result.status === 'success'){
-            setTimeout(() => {document.getElementById('log_modal').style.display = 'none';}, 2000);
-            updateHeaderForUser();
-        }
-    }catch(error){console.error("Log error:", error);}
-}
-
-// Registration Logic
-async function registration(){
-    // Data Transfer Object (DTO) for registration
-    const userData = {
-        reg_username: document.getElementById('reg_username').value,
-        reg_fullname: document.getElementById('reg_fullname').value,
-        reg_email: document.getElementById('reg_email').value,
-        reg_password: document.getElementById('reg_password').value,
-        reg_language: 'PLN',
-        reg_currency: document.getElementById('active_currency').textContent()
-    };
-
-    try{
-        const regResult = document.getElementById('reg_result');
-        const response = await fetch('php/register.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(userData)
-        });
-
-        const result = await response.json();
-        reg_result.innerText = result.message; // Display Server Response
-
-        if(result.status === 'success'){
-            e.target.reset(); // Reset Form Fields
-            regResult.style.color = '#4CAF50';
-
-            // Auto-close Modal After Delay
-            setTimeout(() => {document.getElementById('reg_modal').style.display = 'none'; regResult.innerText = '';}, 2000);
-        }else regResult.style.color = "#ff4d4d";
-    }catch(error){
-        regResult.innerText = 'Server connection failed';
-        regResult.style.color = "#ff4d4d";
-        console.error('Reg error: ', error);
-    }
 }

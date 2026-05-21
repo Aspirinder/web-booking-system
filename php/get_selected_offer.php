@@ -53,11 +53,23 @@ if($offer['category'] === "Apartments" || $offer['category'] === "Castles" || $o
 $stmtD = $conn->prepare($detailsSql);
 $stmtD->bind_param("i", $id);
 $stmtD->execute();
-$details = $stmtD->get_result()->fetch_assoc();;
+$details = $stmtD->get_result()->fetch_assoc();
+
+
+$bookings =[];
+$bookingsSql = "SELECT * FROM bookings WHERE offer_id = ?";
+$stmtBookings = $conn->prepare($bookingsSql);
+$stmtBookings->bind_param("i", $id);
+$stmtBookings->execute();
+$resBookings = $stmtBookings->get_result();
+while($row = $resBookings->fetch_assoc()){
+    $bookings[] = $row;
+}
 
 $offer['benefits'] = $benefits;
 $offer['photos'] = $photos;
 $offer['details'] = $details;
+$offer['bookings'] = $bookings;
 
 header('Content-Type: application/json');
 echo json_encode($offer);

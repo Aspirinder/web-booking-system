@@ -7,10 +7,9 @@
 const locationInput = document.getElementById('location_input');
 const inputLocationsContainer = document.querySelector('.input_locations_container');
 const autocompleteList = document.getElementById('autocomplete_list');
-const checkInCalendar = document.querySelectorAll('.search_img')[1];
-const checkOutCalendar = document.querySelectorAll('.search_img')[2];
-const checkInInput = document.getElementById('check_in');
-const checkOutInput = document.getElementById('check_out');
+const checkInInput = document.getElementById('booking_check_in');
+const checkOutInput = document.getElementById('booking_check_out');
+const dateContainer = document.getElementById('date_container');
 const btnSearch = document.getElementById('btn_search');
 
 // Guests Dropdown
@@ -60,14 +59,13 @@ document.addEventListener('DOMContentLoaded', () =>{
     // Inject Common UI Into Placeholders
     document.getElementById('header_placeholder').innerHTML = commonComponents.header;
     document.getElementById('menubar_placeholder').innerHTML = commonComponents.menubar;
-    document.getElementById('log_modal_placeholder').innerHTML = commonComponents.logModal;
-    document.getElementById('reg_modal_placeholder').innerHTML = commonComponents.regModal;
     document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
 
     // Activate Common UI Listeners
     initCommonUI();
     // Authenticate User Session
     checkUserSession();
+    new AuthManager('log_modal', 'reg_modal');
 
     // Change Category if it is
     const urlParam  = new URLSearchParams(window.location.search);
@@ -139,15 +137,9 @@ document.querySelectorAll('.guests_input').forEach(input => {
 
 
 // Date Picker Trigger
-checkInCalendar.addEventListener('click', () =>{checkInInput.showPicker();});
-checkOutCalendar.addEventListener('click', () =>{checkOutInput.showPicker();});
-
-
-// Checking the correctness of dates
-checkInInput.addEventListener('change', () =>{
-    checkOutInput.setAttribute('min', checkInInput.value);
-
-    if(checkOutInput.value && checkOutInput.value < checkInInput.value)checkOutInput.value = '';
+new CustomCalendar('booking_check_in', 'booking_check_out', []);
+dateContainer.addEventListener('click', () => {
+    checkInInput.click();
 });
 
 
@@ -167,15 +159,9 @@ btnSearch.addEventListener('click', (e) => {
         return;
     }
 
-    if(checkInInput.value == ''){
-        checkInInput.showPicker();
-        return;
-    }
+    if(checkInInput.value == ''){checkInInput.click(); return;}
 
-    if(checkOutInput.value == ''){
-        checkOutInput.showPicker();
-        return;
-    }
+    if(checkOutInput.value == ''){checkOutInput.click(); return;}
     searchOffers();
 });
 
@@ -464,7 +450,7 @@ function showSearchOffers(data){
                                 <span class="price_label">Price per night</span>
                                 <span class="price_value">${convertedPrice} ${localStorage.getItem('currentSymbol')}</span>
                         </div>
-                        <a href="offer_details.html?id=${item.offer_id}" target="_blank" class="btn_view_more">View Details</a>
+                        <a href="offer_details.html?id=${item.offer_id}&checkin=${checkInInput.value || ''}&checkout=${checkOutInput.value || ''}" target="_blank" class="btn_view_more">View Details</a>
                     </div>
                 </div>
             </div>`;
