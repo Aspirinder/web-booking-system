@@ -197,7 +197,6 @@ class CustomCalendar{
     }
 
     initDOM(){
-        if(document.getElementById('custom_calendar_modal')) return;
         this.modal = document.createElement('div');
         this.modal.className = "custom_calendar_modal";
         this.modal.innerHTML = `
@@ -237,13 +236,12 @@ class CustomCalendar{
 
     initEvents() {
 
-        const openModal = (e) => {
-            e.stopPropagation();
+        this.openModal = (e) => {
+            if(e) e.stopPropagation();
             this.selectedStart = this.inputCheckIn.value ? this.inputCheckIn.value : null;
             this.selectedEnd = this.inputCheckOut.value ? this.inputCheckOut.value : null;
-
-            const rect = e.currentTarget.getBoundingClientRect();
-
+            const target = (e && (e.currentTarget === this.inputCheckIn || e.currentTarget === this.inputCheckOut)) ? e.currentTarget : this.inputCheckIn;
+            const rect = target.getBoundingClientRect();
             this.modal.style.top = `${rect.bottom + window.scrollY + 5}px`;
             this.modal.style.left = `${rect.left + window.scrollX}px`;
 
@@ -251,8 +249,8 @@ class CustomCalendar{
             this.render();
         }
 
-        this.inputCheckIn.addEventListener('click', openModal);
-        this.inputCheckOut.addEventListener('click', openModal);
+        this.inputCheckIn.addEventListener('click', (e) => this.openModal(e));
+        this.inputCheckOut.addEventListener('click', (e) => this.openModal(e));
 
         this.prevMonthBtn.addEventListener('click', (e) =>{
                 e.stopPropagation();
@@ -359,17 +357,21 @@ class CustomCalendar{
     }
 }
 
-class AuthManager{
-    constructor(loginFormId, regFormId){
+class ModalManager{
+    constructor(loginFormId, regFormId, checkoutFormId){
         this.render();
 
         this.loginForm = document.getElementById(loginFormId);
         this.regForm = document.getElementById(regFormId);
+        this.checkoutForm = document.getElementById(checkoutFormId);
         this.logModal = document.getElementById('log_modal');
         this.regModal = document.getElementById('reg_modal');
+        this.checkoutModal = document.getElementById('checkout_modal');
         this.switchToLog = document.getElementById('switch_to_log');
         this.switchToReg = document.getElementById('switch_to_reg');
         this.closeModals = document.querySelectorAll('.close_modal');
+
+        this.onConfirmCallback = null;
 
         if(this.loginForm || this.regForm) this.initEvents();
     }
@@ -406,6 +408,41 @@ class AuthManager{
                     <button type="submit" class="btn_submit">Sign In</button>
                 </form>
                 <p class="reg_switch">Don't have an account? <a href="#" id="switch_to_reg">Sign Up</a></p>
+            </div>
+        </div>
+
+        <div id="checkout_modal" class="modal">
+            <div class="modal_content checkout_content">
+                <span class="close_modal">&times;</span>
+                <h2 class="modal_title">Confirm Booking</h2>
+
+                <div class="checkout_summary">
+                    <p><strong>Property: </strong><span id="out_offer_name">-</span></p>
+                    <p><strong>Dates: </strong><span id="out_offer_dates">-</span></p>
+                    <p><strong>Total nights: </strong><span id="out_offer_nights">0</span></p>
+                    <hr>
+                    <h3 class="total_price_title">Total price: <span id="out_total_price">0</span></h3>
+                </div>
+
+                <form id="checkout_payment_form">
+                    <h4 class="payment_title">Select Payment Method:</h4>
+                    <div class="payment_options">
+                        <label class="pay_option">
+                            <input type="radio" name="payment_method" value="creadit_card" checked>
+                            <span>Creadit Card</span>
+                        </label>
+                        <label class="pay_option">
+                            <input type="radio" name="payment_method" value="paypal">
+                            <span>PayPal</span>
+                        </label>
+                        <label class="pay_option">
+                            <input type="radio" name="payment_method" value="crypto">
+                            <span>Cryptocurrency</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn_submit btn_confirm_pay">Pay & Book Now</button>
+                </form>
             </div>
         </div>
         `;
@@ -445,6 +482,7 @@ class AuthManager{
             button.addEventListener('click', () => {
                 this.logModal.style.display ='none';
                 this.regModal.style.display ='none';
+                this.checkoutModal.style.display ='none';
 
                 const regResult = document.getElementById('reg_result');
                 if(regResult) regResult.innerText = '';
@@ -509,6 +547,27 @@ class AuthManager{
             regResult.style.color = "#ff4d4d";
             console.error('Reg error: ', error);
         }
+    }
+
+    fillCheckout(summary){
+        document.getElementById('out_offer_name').innerText = summary.offerName;
+        document.getElementById('out_offer_dates').innerText = `${summary.checkIn} - ${summary.checkOut}`;
+        document.getElementById('out_offer_nights').innerText = summary.nights;
+        document.getElementById('out_total_price').innerText = summary.totalPrice;
+
+        if(summary.onConfirm) this.onConfirmCallback = summary.onConfirm;
+
+        if(this.checkoutForm){
+            this.checkoutForm.addEventListener('submit', async (e) =>{
+                e.preventDefault;
+
+                const selectedMethod = this.checkoutForm.querySelector('input[name="payment_method"]:checked').value;
+
+                if(typeof summary.onConfirm === "function") summary.onConfirm(selectedMethod);
+            });
+        }
+
+        if(this.checkoutModal) this.checkoutModal.style.display = 'block';
     }
 }
 

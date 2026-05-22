@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     initCommonUI();
     // Authenticate User Session
     checkUserSession();
-    new AuthManager('log_modal', 'reg_modal');
+    new ModalManager('log_modal', 'reg_modal', 'checkout_modal');
 
     // Change Category if it is
     const urlParam  = new URLSearchParams(window.location.search);
@@ -137,10 +137,8 @@ document.querySelectorAll('.guests_input').forEach(input => {
 
 
 // Date Picker Trigger
-new CustomCalendar('booking_check_in', 'booking_check_out', []);
-dateContainer.addEventListener('click', () => {
-    checkInInput.click();
-});
+window.indexCalendar = new CustomCalendar('booking_check_in', 'booking_check_out', []);
+dateContainer.addEventListener('click', (e) => {window.indexCalendar.openModal(e);});
 
 
 // Location Input & Location Help List
@@ -159,9 +157,9 @@ btnSearch.addEventListener('click', (e) => {
         return;
     }
 
-    if(checkInInput.value == ''){checkInInput.click(); return;}
+    if(checkInInput.value == ''){window.indexCalendar.openModal(e); return;}
 
-    if(checkOutInput.value == ''){checkOutInput.click(); return;}
+    if(checkOutInput.value == ''){window.indexCalendar.openModal(e); return;}
     searchOffers();
 });
 
