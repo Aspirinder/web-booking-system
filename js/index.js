@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     initCommonUI();
     // Authenticate User Session
     checkUserSession();
-    new ModalManager('log_modal', 'reg_modal', 'checkout_modal');
+    new ModalManager('log_modal', 'reg_modal', '', '');
 
     // Change Category if it is
     const urlParam  = new URLSearchParams(window.location.search);
@@ -448,7 +448,8 @@ function showSearchOffers(data){
                                 <span class="price_label">Price per night</span>
                                 <span class="price_value">${convertedPrice} ${localStorage.getItem('currentSymbol')}</span>
                         </div>
-                        <a href="offer_details.html?id=${item.offer_id}&checkin=${checkInInput.value || ''}&checkout=${checkOutInput.value || ''}" target="_blank" class="btn_view_more">View Details</a>
+                        <a href="offer_details.html?id=${item.offer_id}&checkin=${checkInInput.value || ''}&checkout=${checkOutInput.value || ''}" 
+                        target="_blank" class="btn_view_more">View Details</a>
                     </div>
                 </div>
             </div>`;

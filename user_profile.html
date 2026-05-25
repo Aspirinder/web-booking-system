@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profil</title>
+    <link rel="stylesheet" href="css/user_profile.css">
+</head>
+<body>
+
+    <div id="header_placeholder"></div>
+    <div id="menubar_placeholder"></div>
+
+    <div class="line"></div>
+
+    <div class="profile_container">
+        <div class="left_slider">
+            <div class="avatar_wrapper">
+                <img src="" alt="avatar" id="user_avatar_img" class="user_avatar">
+            </div>
+
+            <div class="input_box">
+                <label>Username</label>
+                <input type="text" id="edit_username">
+                <button type="button" class="btn_update" data-type="username">Change</button>
+                <button type="button" class="btn_cancel" data-type="username">Cancel</button>
+                <button type="button" class="btn_save" data-type="username">Save</button>
+            </div>
+            <div class="input_box">
+                <label>Full name</label>
+                <input type="text" id="edit_fullname">
+                <button type="button" class="btn_update" data-type="fullname">Change</button>
+                <button type="button" class="btn_cancel" data-type="fullname">Cancel</button>
+                <button type="button" class="btn_save" data-type="fullname">Save</button>
+            </div>
+            <div class="input_box">
+                <label>Email Address</label>
+                <input type="text" id="edit_email">
+                <button type="button" class="btn_update" data-type="email">Change</button>
+                <button type="button" class="btn_cancel" data-type="email">Cancel</button>
+                <button type="button" class="btn_save" data-type="email">Save</button>
+            </div>
+        </div>
+
+        <div class="main_content_card">
+            <div class="profile_tab">
+                <button class="tab_btn active" id="btn_switch_to_guest_panel">My Bookings</button>
+                <button class="tab_btn" id="btn_switch_to_host_panel">My Properties</button>
+            </div>
+
+            <div id="guest_panel" class="tab_panel active">
+                <div id="bookings_list_container"></div>
+            </div>
+
+            <div id="host_panel" class="tab_panel">
+                <div id="offers_list_container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer_root_placeholder"></div>
+
+    <script defer src="js/components.js"></script>
+    <script defer src="js/user_profile.js"></script>
+</body>
+</html>

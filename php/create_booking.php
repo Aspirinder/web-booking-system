@@ -27,7 +27,8 @@
     $offerId = $data['offer_id'];
     $checkIn = $data['check_in'];
     $checkOut = $data['check_out'];
-    $totalPrice = floatval($data['total_price']);
+    $totalPrice = $data['total_price'];
+    $currency = $data['currency'];
     $paymentMethod = $data['payment_method'];
 
     try{
@@ -45,10 +46,10 @@
             exit;
         }
 
-        $insertSql = "INSERT INTO bookings (offer_id, user_id, check_in, check_out, total_price, status, payment_method, created_at)
-                        VALUES (?, ?, ?, ?, ?, 'pending', ?, NOW())";
+        $insertSql = "INSERT INTO bookings (offer_id, user_id, check_in, check_out, total_price, currency, status, payment_method, created_at)
+                        VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, NOW())";
         $stmtI = $conn->prepare($insertSql);
-        $stmtI->bind_param("iissds", $offerId, $userId, $checkIn, $checkOut, $totalPrice, $paymentMethod);
+        $stmtI->bind_param("iissdss", $offerId, $userId, $checkIn, $checkOut, $totalPrice, $currency, $paymentMethod);
         $stmtI->execute();
 
         if($stmtI->affected_rows > 0){

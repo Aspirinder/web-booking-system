@@ -26,6 +26,10 @@ button:hover{
     color: var(--bright-yellow);
 }
 
+input{
+    border-radius: 12px;
+}
+
 input[type="date"]::-webkit-calendar-picker-indicator {
     background: transparent;
     display: none;
@@ -43,6 +47,12 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 
 a{
     text-decoration: none;
+}
+
+.line{
+    width: 100%;
+    height: 5px;
+    background-color: #262626;
 }
 
 
@@ -282,6 +292,7 @@ a{
     width: 400px;
     text-align: center;
     position: relative;
+    border-radius: 12px;
 }
 
 .close_modal{
@@ -290,6 +301,11 @@ a{
     color: var(--typical-yellow);
     font-size: 30px;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+.close_modal:hover{
+    color: var(--bright-yellow);
+    transform: scale(1.1);
 }
 
 .modal_img img {
@@ -297,14 +313,14 @@ a{
     border-radius: 8px;
 }
 
-#reg_form, #log_form{
+.reg_form, .log_form{
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: 20px;
 }
 
-#reg_form input, #log_form input{
+.reg_form input, .log_form input{
     background: var(--black);
     border: 1px solid rgba(198, 156, 109, 0.3);
     padding: 12px;
@@ -319,6 +335,7 @@ a{
     padding: 12px;
     text-transform: uppercase;
     font-weight: bold;
+    border-radius: 12px;
 }
 
 .reg_switch{
@@ -474,9 +491,8 @@ a{
     width: 100%;
 }
 
-/* Красивая подложка для итогов бронирования */
 .checkout_summary {
-    background: rgba(198, 156, 109, 0.05); /* Легкий золотистый оттенок */
+    background: rgba(198, 156, 109, 0.05);
     border: 1px solid rgba(198, 156, 109, 0.15);
     padding: 20px;
     border-radius: 8px;
@@ -489,11 +505,11 @@ a{
     font-size: 15px;
     color: #e0e0e0;
     display: flex;
-    justify-content: space-between; /* Название слева, значение справа */
+    justify-content: space-between;
 }
 
 .checkout_summary p strong {
-    color: #c69c6d; /* Золотистый акцент для заголовков */
+    color: #c69c6d;
 }
 
 .checkout_summary hr {
@@ -600,6 +616,149 @@ a{
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-top: 5px;
+}
+
+
+/* Booking modal */
+
+.booking_details {
+    text-align: left;
+}
+
+.modal_header_section {
+    margin-bottom: 20px;
+}
+
+.booking_details .offer_link_title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--bright-yellow);
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+}
+
+.offer_link_title{
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.offer_link_title:hover{
+    transform: scale(1.1);
+}
+
+.modal_dates_badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 15px;
+    color: #b0b0b0;
+}
+.modal_dates_badge img {
+    width: 18px;
+    height: 18px;
+}
+
+.card_card_header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid var(--typical-yellow);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+
+.card_card_header img {
+    width: 20px;
+    height: 20px;
+}
+
+.card_card_header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--typical-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card_body_content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.grid_2_columns {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.info_meta_group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info_meta_group label {
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.info_meta_group span {
+    font-size: 18px;
+    color:  var(--white);
+}
+
+.card_footer_price {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card_footer_price label {
+    font-size: 14px;
+    color: #888;
+}
+
+.card_footer_price span {
+    font-size: 22px;
+    font-weight: 700;
+    color: #4caf50;
+}
+
+.modal_actions{
+    margin-top: 20px;
+}
+
+.btn_cancel_booking{
+    width: 100%;
+    background: #3a1d1d;
+    border: 1px solid #5a2727;
+    color: #ff6b6b;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn_cancel_booking:hover{
+    color: #ff6b6b;
+}
+
+.copy_target{
+    cursor: pointer;
+}
+.copy_target:hover {
+    color: var(--bright-yellow);
 }
 
 @keyframes fadeIn {

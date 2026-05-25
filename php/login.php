@@ -20,10 +20,10 @@ if($result->num_rows > 0) {
     
         echo json_encode([
             "status"=> "success",
-            "message"=> "Welcome back, " . $user['full_name'],
+            "message"=> "Welcome back, " . $user['fullname'],
             "user" => [
                 "id" => $user["user_id"],
-                "name" => $user["full_name"]
+                "name" => $user["fullname"]
             ]
         ]);
     }else{

@@ -1,0 +1,260 @@
+const btnSwitchToGuestPanel = document.getElementById('btn_switch_to_guest_panel');
+const btnSwitchToHostPanel = document.getElementById('btn_switch_to_host_panel');
+const guestPanel = document.getElementById('guest_panel');
+const hostPanel = document.getElementById('host_panel');
+const avatar = document.getElementById('user_avatar_img');
+
+const bookingsContainer = document.getElementById('bookings_list_container');
+const myOffersContainer = document.getElementById('offers_list_container');
+
+const btnsChange = document.querySelectorAll('.btn_update');
+const btnsSave = document.querySelectorAll('.btn_save');
+const btnsCancel = document.querySelectorAll('.btn_cancel');
+
+document.getElementById('header_placeholder').innerHTML = commonComponents.header;
+document.getElementById('menubar_placeholder').innerHTML = commonComponents.menubar;
+document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
+initCommonUI();
+checkUserSession();
+loadUserProfile();
+window.modalManager = new ModalManager('', '', '', 'booking_details_form');
+
+btnSwitchToGuestPanel.addEventListener('click', () => {
+    hostPanel.classList.remove('active');
+    btnSwitchToHostPanel.classList.remove('active');
+
+    guestPanel.classList.add('active');
+    btnSwitchToGuestPanel.classList.add('active');
+});
+
+btnSwitchToHostPanel.addEventListener('click', () => {
+    hostPanel.classList.add('active');
+    btnSwitchToHostPanel.classList.add('active');
+
+    guestPanel.classList.remove('active');
+    btnSwitchToGuestPanel.classList.remove('active');
+});
+
+avatar.addEventListener('click', () => {
+    const fileInput = document.createElement('input');
+
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+
+    fileInput.addEventListener('change', async () => {
+        const file = fileInput.files[0];
+        if(!file) return;
+
+        avatar.style.opacity = '0.5';
+
+        try{
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const response = await fetch(`php/upload_avatar_proxy.php`, {
+                method: 'POST',
+                body: formData
+            });
+
+            const imgbbResult = await response.json();
+
+            if(imgbbResult.status === 'success') avatar.src = imgbbResult.url;
+            else console.error('ImgBB upload failed: ' + imgbbResult.error.message);
+
+        }catch(error){console.error('Error uploading photo: ', error);}
+        finally{avatar.style.opacity = '1';}
+    });
+
+    fileInput.click();
+});
+
+btnsChange.forEach(button => {
+    button.addEventListener('click', () => {
+        const type = button.dataset.type;
+        
+        const input = document.getElementById(`edit_${type}`);
+        const btnCancel = document.querySelector(`.btn_cancel[data-type="${type}"]`);
+        const btnSave = document.querySelector(`.btn_save[data-type="${type}"]`);
+
+        if (input) {input.disabled = false; input.focus();}
+        
+        button.style.display = 'none';
+        if (btnCancel) btnCancel.style.display = 'inline-block';
+        if (btnSave) btnSave.style.display = 'inline-block';
+    });
+});
+
+btnsCancel.forEach(button => {
+    button.addEventListener('click', () => {
+        const type = button.dataset.type;
+        const input = document.getElementById(`edit_${type}`);
+        const btnChange = document.querySelector(`.btn_update[data-type="${type}"]`);
+        const btnSave = document.querySelector(`.btn_save[data-type="${type}"]`);
+
+        if (input) {input.value = input.dataset.oldValue || ''; input.disabled = true;}
+
+        button.style.display = 'none';
+        if (btnSave) btnSave.style.display = 'none';
+        if (btnChange) btnChange.style.display = 'inline-block';
+    });
+});
+
+btnsSave.forEach(button => {
+    button.addEventListener('click', async () => {
+        const type = button.dataset.type;
+        const input = document.getElementById(`edit_${type}`);
+        const btnChange = document.querySelector(`.btn_update[data-type="${type}"]`);
+        const btnCancel = document.querySelector(`.btn_cancel[data-type="${type}"]`);
+
+        if (!input) return;
+        const newValue = input.value.trim();
+
+        if (!newValue) return;
+
+        if (newValue !== input.dataset.oldValue) {
+            const success = await sendFieldUpdateToServer(type, newValue);
+            if (success) input.dataset.oldValue = newValue;
+            else return;
+        }
+
+        input.disabled = true;
+        button.style.display = 'none';
+        if (btnCancel) btnCancel.style.display = 'none';
+        if (btnChange) btnChange.style.display = 'inline-block';
+    });
+});
+
+async function sendFieldUpdateToServer(fieldName, fieldValue) {
+    try {
+        const response = await fetch('php/update_user_profile.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                field: fieldName, 
+                value: fieldValue  
+            })
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') return true;
+        
+        console.error('Update failed: ' + result.message);
+        return false;
+    } catch (error) {
+        console.error('Error updating field:', error);
+        return false;
+    }
+}
+
+async function loadUserProfile() {
+    try {
+        const response = await fetch('php/get_user_profile_info.php');
+        const data = await response.json();
+
+        if (data.status === 'error') {
+            alert('Session expired or error: ' + data.message);
+            window.location.href = 'index.html';
+            return;
+        }
+
+        setupInputState('edit_username', data.userInfo.username);
+        setupInputState('edit_fullname', data.userInfo.fullname);
+        setupInputState('edit_email', data.userInfo.email);
+
+        avatar.src = data.avatar;
+
+        renderBookings(data.bookings);
+        renderMyOffers(data.myOffers);
+
+    } catch (error) {
+        console.error('Error loading profile:', error);
+    }
+}
+
+function setupInputState(fieldId, value){
+    const input = document.getElementById(fieldId);
+    if(input){
+        input.value = value || '';
+        input.disabled = true;
+        input.dataset.oldValue = value || '';
+    }
+}
+
+function renderBookings(bookings){
+    bookingsContainer.innerHTML = '';
+
+    if(!bookings || bookings.length === 0){
+        bookingsContainer.innerHTML = `<div class="no_data_placeholder">You don't have any bookings yet.</div>`;
+        return;
+    }
+
+    bookings.forEach(b => {
+        let category;
+        if(b.category === 'Apartments') category = document.querySelectorAll('.btn_menu img')[4].src;
+        if(b.category === 'Villas') category = document.querySelectorAll('.btn_menu img')[5].src;
+        if(b.category === 'Castles') category = document.querySelectorAll('.btn_menu img')[6].src;
+        if(b.category === 'Cars') category = document.querySelectorAll('.btn_menu img')[7].src;
+        if(b.category === 'Helicopters') category = document.querySelectorAll('.btn_menu img')[8].src;
+        if(b.category === 'Airplanes') category = document.querySelectorAll('.btn_menu img')[9].src;
+        bookingsContainer.innerHTML += `
+            <div class="list_booking_card" data-booking-id="${b.booking_id}">
+                <div class="item_details">
+                    <h3>${b.offer_name} <img src="${category}" alt="img_category" class="category_img"></h3>
+                    <p><strong>Dates:</strong> ${b.check_in} — ${b.check_out}</p>
+                </div>
+                <div class="item_status_price">
+                    <span class="badge ${b.status}">${b.status}</span>
+                    <div class="price_tag">${b.total_price} ${getCurrencySymbol(b.currency)}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    const bookingsList = document.querySelectorAll('.list_booking_card');
+    bookingsList.forEach(card => {
+        card.addEventListener('click', () => {
+            const bookingId = card.dataset.bookingId;
+            if(window.modalManager) window.modalManager.openBookingDetails(bookingId);
+        });
+    });
+}
+
+function renderMyOffers(offers){
+    myOffersContainer.innerHTML = '';
+
+    if (!offers || offers.length === 0) {
+        myOffersContainer.innerHTML = '<div class="no_data_placeholder">You haven\'t listed any properties yet.</div>';
+        return;
+    }
+
+    offers.forEach(o => {
+        myOffersContainer.innerHTML +=`
+            <div class="list_my_offer_card">
+                <div class="item_details">
+                    <h3>${o.name}</h3>
+                    <p>📍 ${o.city}, ${o.country}</p>
+                </div>
+                <div class="item_status_price">
+                    <div class="price_tag">${o.price} / night</div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function getCurrencySymbol(currencyCode) {
+    if (!currencyCode) return '';
+
+    const symbols = {
+        'USD': '$',
+        'EUR': '€',
+        'GBP': '£',
+        'PLN': 'zł',
+        'UAH': '₴',
+        'RUB': '₽',
+        'BYN': 'Br'
+    };
+    const code = currencyCode.toUpperCase().trim();
+
+    return symbols[code] || code;
+}

@@ -358,22 +358,31 @@ class CustomCalendar{
 }
 
 class ModalManager{
-    constructor(loginFormId, regFormId, checkoutFormId){
+    constructor(loginFormId, regFormId, checkoutFormId, bookingDetailsFormId){
+        this.loginFormId = loginFormId;
+        this.regFormId = regFormId;
+        this.checkoutFormId = checkoutFormId;
+        this.bookingDetailsFormId = bookingDetailsFormId;
+
         this.render();
 
-        this.loginForm = document.getElementById(loginFormId);
-        this.regForm = document.getElementById(regFormId);
-        this.checkoutForm = document.getElementById(checkoutFormId);
+        this.loginForm = document.getElementById(this.loginFormId);
+        this.regForm = document.getElementById(this.regFormId);
+        this.checkoutForm = document.getElementById(this.checkoutFormId);
+        this.bookingDetailsForm = document.getElementById(this.bookingDetailsFormId)
+
         this.logModal = document.getElementById('log_modal');
         this.regModal = document.getElementById('reg_modal');
         this.checkoutModal = document.getElementById('checkout_modal');
+        this.bookingDetailsModal = document.getElementById('booking_details_modal');
+
         this.switchToLog = document.getElementById('switch_to_log');
         this.switchToReg = document.getElementById('switch_to_reg');
         this.closeModals = document.querySelectorAll('.close_modal');
 
         this.onConfirmCallback = null;
 
-        if(this.loginForm || this.regForm) this.initEvents();
+        this.initEvents();
     }
 
     render(){
@@ -386,7 +395,7 @@ class ModalManager{
             <div class="modal_content">
                 <span class="close_modal">&times;</span>
                 <h2 class="modal_title">Sign Up</h2>
-                <form id="reg_form">
+                <form id="${this.regFormId}" class="reg_form">
                     <input type="text" id="reg_username" placeholder="Username" required>
                     <input type="text" id="reg_fullname" placeholder="Name and surname" required>
                     <input type="email" id="reg_email" placeholder="Email" required>
@@ -402,7 +411,7 @@ class ModalManager{
             <div class="modal_content">
                 <span class="close_modal">&times;</span>
                 <h2 class="modal_title">Sign In</h2>
-                <form id="log_form">
+                <form id="${this.loginFormId}" class="log_form">
                     <input type="email" id="log_email" placeholder="Email" required>
                     <input type="password" id="log_password" placeholder="Password" required>
                     <button type="submit" class="btn_submit">Sign In</button>
@@ -424,7 +433,7 @@ class ModalManager{
                     <h3 class="total_price_title">Total price: <span id="out_total_price">0</span></h3>
                 </div>
 
-                <form id="checkout_payment_form">
+                <form id="${this.checkoutFormId}" class="check_out_form">
                     <h4 class="payment_title">Select Payment Method:</h4>
                     <div class="payment_options">
                         <label class="pay_option">
@@ -442,6 +451,66 @@ class ModalManager{
                     </div>
 
                     <button type="submit" class="btn_submit btn_confirm_pay">Pay & Book Now</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="booking_details_modal" class="modal">
+            <div class="modal_content booking_details">
+                <span class="close_modal">&times;</span>
+        
+                <div class="modal_header_section">
+                    <h2 id="md_offer_name" class="offer_link_title">Loading Property...</h2>
+                    <div class="modal_dates_badge">
+                        <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="calendar">
+                        <span id="md_booking_dates">00.00.0000 — 00.00.0000</span>
+                    </div>
+                </div>
+
+                <div class="info_card">
+                    <div class="card_card_header">
+                        <img src="https://i.ibb.co/hx5WyV7z/person.png" alt="host">
+                        <h3>Host Information</h3>
+                    </div>
+                    <div class="card_body_content">
+                        <div class="info_meta_group">
+                            <label>Name</label>
+                            <span id="md_host_name">-</span>
+                        </div>
+                        <div class="info_meta_group">
+                            <label>Email (Click to copy)</label>
+                            <span id="md_host_email" class="copy_target">-</span>
+                        </div>
+                        <div class="info_meta_group">
+                            <label>Phone (Click to copy)</label>
+                            <span id="md_host_phone" class="copy_target">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info_card">
+                    <div class="card_card_header">
+                        <img src="https://i.ibb.co/NvYkdvN/log-out.png" style="transform: rotate(180deg);" alt="billing">
+                        <h3>Payment & Status</h3>
+                    </div>
+                    <div class="card_body_content grid_2_columns">
+                        <div class="info_meta_group">
+                            <label>Method</label>
+                            <span id="md_payment_method">-</span>
+                        </div>
+                        <div class="info_meta_group">
+                            <label>Status</label>
+                            <span id="md_booking_status" class="badge">pending</span>
+                        </div>
+                    </div>
+                    <div class="card_footer_price">
+                        <label>Total Paid</label>
+                        <span id="md_total_price">0.00 $</span>
+                    </div>
+                </div>
+
+                <form id="${this.bookingDetailsFormId}" class="modal_actions">
+                    <button type="submit" id="btn_cancel_booking" class="btn_cancel_booking">Cancel This Booking</button>
                 </form>
             </div>
         </div>
@@ -464,6 +533,23 @@ class ModalManager{
             })
         }
 
+        if(this.checkoutForm){
+            this.checkoutForm.addEventListener('submit', async (e) =>{
+                e.preventDefault();
+
+                const selectedMethod = this.checkoutForm.querySelector('input[name="payment_method"]:checked').value;
+
+                if(typeof this.onConfirmCallback === "function") this.onConfirmCallback(selectedMethod);
+            });
+        }
+
+        if(this.bookingDetailsForm){
+            this.bookingDetailsForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleBookingCancellation();
+            });
+        }
+
         // Toggle Between Login/Register
         this.switchToLog.addEventListener('click', (e) => {
             e.preventDefault(); // Stop Hash Navigation
@@ -483,11 +569,14 @@ class ModalManager{
                 this.logModal.style.display ='none';
                 this.regModal.style.display ='none';
                 this.checkoutModal.style.display ='none';
+                this.bookingDetailsModal.style.display ='none';
 
                 const regResult = document.getElementById('reg_result');
                 if(regResult) regResult.innerText = '';
             });
         });
+
+
     }
 
     // Login Logic
@@ -514,18 +603,16 @@ class ModalManager{
 
     // Registration Logic
     async hadleRegistration(e){
+        const regResult = document.getElementById('reg_result');
         // Data Transfer Object (DTO) for registration
         const userData = {
             reg_username: document.getElementById('reg_username').value,
             reg_fullname: document.getElementById('reg_fullname').value,
             reg_email: document.getElementById('reg_email').value,
-            reg_password: document.getElementById('reg_password').value,
-            reg_language: 'PLN',
-            reg_currency: document.getElementById('active_currency') ? document.getElementById('active_currency').textContent : localStorage.getItem('currentCurrency')
+            reg_password: document.getElementById('reg_password').value
         };
 
         try{
-            const regResult = document.getElementById('reg_result');
             const response = await fetch('php/register.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -557,17 +644,61 @@ class ModalManager{
 
         if(summary.onConfirm) this.onConfirmCallback = summary.onConfirm;
 
-        if(this.checkoutForm){
-            this.checkoutForm.addEventListener('submit', async (e) =>{
-                e.preventDefault;
-
-                const selectedMethod = this.checkoutForm.querySelector('input[name="payment_method"]:checked').value;
-
-                if(typeof summary.onConfirm === "function") summary.onConfirm(selectedMethod);
-            });
-        }
-
         if(this.checkoutModal) this.checkoutModal.style.display = 'block';
+    }
+
+    async openBookingDetails(bookingId){
+        this.activeBookingId = bookingId;
+
+        try{
+            const response = await fetch(`php/get_booking_details.php?id=${bookingId}`);
+            const result = await response.json();
+
+            if(result.status !== 'success'){ console.error('Error php: ', result.message); return; }
+
+            const booking = result.booking;
+            const currencySymbol = typeof getCurrencySymbol === 'function' ? getCurrencySymbol(booking.currency) : booking.currency;
+
+            document.getElementById('md_offer_name').textContent = booking.offer_name;
+            document.getElementById('md_booking_dates').textContent = `${booking.check_in} — ${booking.check_out}`;
+            document.getElementById('md_host_name').textContent = booking.host_name;
+            document.getElementById('md_host_email').textContent = booking.owner_email || 'Not provided';
+            document.getElementById('md_host_phone').textContent = booking.owner_phone_number || 'Not provided';
+            document.getElementById('md_total_price').textContent = `${booking.total_price} ${currencySymbol}`;
+            document.getElementById('md_payment_method').textContent = booking.payment_method.toUpperCase();
+
+            const statusBadge = document.getElementById('md_booking_status');
+            statusBadge.textContent = booking.status;
+            statusBadge.className = `badge ${booking.status}`;
+
+            const btnCancel = document.getElementById('btn_cancel_booking');
+            if (booking.status === 'cancelled') btnCancel.style.display = 'none';
+            else btnCancel.style.display = 'block';
+
+            if (this.bookingDetailsModal) this.bookingDetailsModal.style.display = 'block';
+
+        }catch(err) {console.error('Error loading contextual booking details layout:', err);}
+    }
+
+    async handleBookingCancellation(){
+        if(!this.activeBookingId) return;
+
+        if (!confirm('Are you sure you want to cancel this booking? This action cannot be undone.')) return;
+        
+        try {
+            const response = await fetch('php/cancel_booking.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ booking_id: this.activeBookingId })
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                alert('Booking successfully cancelled.');
+                window.location.reload();
+            } else alert('Cancellation failed: ' + result.message);
+        } catch (err) { console.error('Error modifying reservation status fields:', err); }
     }
 }
 
@@ -577,12 +708,12 @@ async function checkUserSession() {
         const response = await fetch('php/check_auth.php');
         const data = await response.json();
         // Change Interface if Session is
-        if(data.isLoggedIn) updateHeaderForUser();
+        if(data.isLoggedIn) updateHeaderForUser(data.userId);
     }catch(error) {console.error("Auth check failed: ", error);}
 }
 
 // Change Interface if Logined
-async function updateHeaderForUser() {
+async function updateHeaderForUser(userId) {
     const [signInBtn, signUpBtn, userBtn, logOutBtn] = document.querySelectorAll('.btn_menu');
     signInBtn.style.display = 'none';
     signUpBtn.style.display = 'none';
@@ -590,6 +721,9 @@ async function updateHeaderForUser() {
     userBtn.style.display = 'flex';
     logOutBtn.style.display = 'flex';
     logOutBtn.addEventListener('click', logout);
+    userBtn.addEventListener('click', () => {
+        window.open(`user_profile.html?id=${userId}`, '_blank');
+    });
 }
 
 // Log Out

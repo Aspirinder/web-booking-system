@@ -13,16 +13,69 @@
 
     <div class="line"></div>
 
-    <div class="container">
+    <main class="container">
+        <div id="offer_container">
+            <div class="offer_header">
+                <div class="title_rating_wrapper">
+                    <h1 id="title">Loading...</h1>
+                    <div class="offer_rating">
+                        <img class="rating_icon" src="https://i.ibb.co/cKgrLS0s/rating-icon.png" alt="img_rating_icon_alt">
+                        <span class ="rating_value">Loading...</span>
+                    </div>
+                </div>
+            
+                <p class="offer_location"><a id="offer_location" href="" target="_blank"></a></p>
+            </div>
 
-        <main id="offer_container">
-            <div class="loader">Loading details...</div>
-        </main>
-    </div>
+            <div class="offer_layout">
+
+                <div class="left_column">
+                    <div class="slider_container">
+                        <div class ="main_image_wrapper">
+                            <img src="" id="slider_img" alt="">
+                            <button class="slider_btn prev"></button>
+                            <button class="slider_btn next"></button>
+
+                            <div class="photo_counter"><span id="current_num_photo">Loading...</span></div>
+                        </div>
+                    </div>
+
+                    <div class="main_content">
+                        <h3>Benefits:</h3>
+                        <div class="benefits_list" id="benefits_list"></div>
+                        <p class="description" id="description" style="white-space: pre-line;">Loading...</p>
+                    </div>
+                </div>
+
+                <div class="right_column">
+                    <div class="booking_form">
+                        <div class="booking_card">
+                            <div class="price_big" id="price_big">Loading...</div>
+
+                            <div class="booking_dates_form">
+                                <div class="date_input_group">
+                                    <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="calendar_alt">
+                                    <label for="booking_check_in">Check-In</label>
+                                </div>
+                                <input type="date" id="booking_check_in" readonly required placeholder="dd.mm.yyyy">
+                                <div class="date_input_group">
+                                    <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="calendar_alt">
+                                    <label for="booking_check_out">Check-Out</label>
+                                </div>
+                                <input type="date" id="booking_check_out" readonly required placeholder="dd.mm.yyyy">
+                            </div>
+                        </div>
+
+                        <button class="btn_book_now" id="btn_book_now">Book now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <div id="footer_root_placeholder"></div>
 
-    <script src="js/components.js"></script>
-    <script src="js/offer_details.js"></script>
+    <script defer src="js/components.js"></script>
+    <script defer src="js/offer_details.js"></script>
 </body>
 </html>
