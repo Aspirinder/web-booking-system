@@ -55,30 +55,29 @@ let isSearch = false; // Tracks if User is Viewing Search Results or Default Rec
     Builds the page using components and fetches initial data.
 */
 
-document.addEventListener('DOMContentLoaded', () =>{
-    // Inject Common UI Into Placeholders
-    document.getElementById('header_placeholder').innerHTML = commonComponents.header;
-    document.getElementById('menubar_placeholder').innerHTML = commonComponents.menubar;
-    document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
+// Inject Common UI Into Placeholders
+document.getElementById('header_placeholder').innerHTML = commonComponents.header;
+document.getElementById('menubar_placeholder').innerHTML = commonComponents.menubar;
+document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
 
-    // Activate Common UI Listeners
-    initCommonUI();
-    // Authenticate User Session
-    checkUserSession();
-    new ModalManager('log_modal', 'reg_modal', '', '');
+// Authenticate User Session
+checkUserSession();
+window.modalManager = new ModalManager('log_form', 'reg_form', '', '');
 
-    // Change Category if it is
-    const urlParam  = new URLSearchParams(window.location.search);
-    const categoryFromUrl = urlParam.get('category');
+// Activate Common UI Listeners
+initCommonUI();
 
-    if(categoryFromUrl){
-        const targetBtn = document.querySelector(`.btn_menu[data-category="${categoryFromUrl}"]`);
-        if(targetBtn) changeCategory(targetBtn);
-    }
+// Change Category if it is
+const urlParam  = new URLSearchParams(window.location.search);
+const categoryFromUrl = urlParam.get('category');
 
-    // // Fetch and display recommended properties
-    loadRates().then(() => recommendationOffers());
-});
+if(categoryFromUrl){
+    const targetBtn = document.querySelector(`.btn_menu[data-category="${categoryFromUrl}"]`);
+    if(targetBtn) changeCategory(targetBtn);
+}
+
+// Fetch and display recommended properties
+loadRates().then(() => recommendationOffers());
 
 
 /*

@@ -1,5 +1,6 @@
 const btnSwitchToGuestPanel = document.getElementById('btn_switch_to_guest_panel');
 const btnSwitchToHostPanel = document.getElementById('btn_switch_to_host_panel');
+const btnNewOffer = document.getElementById('btn_create_offer');
 const guestPanel = document.getElementById('guest_panel');
 const hostPanel = document.getElementById('host_panel');
 const avatar = document.getElementById('user_avatar_img');
@@ -14,14 +15,17 @@ const btnsCancel = document.querySelectorAll('.btn_cancel');
 document.getElementById('header_placeholder').innerHTML = commonComponents.header;
 document.getElementById('menubar_placeholder').innerHTML = commonComponents.menubar;
 document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
+
 initCommonUI();
 checkUserSession();
 loadUserProfile();
+
 window.modalManager = new ModalManager('', '', '', 'booking_details_form');
 
 btnSwitchToGuestPanel.addEventListener('click', () => {
     hostPanel.classList.remove('active');
     btnSwitchToHostPanel.classList.remove('active');
+    btnNewOffer.style.display ='none';
 
     guestPanel.classList.add('active');
     btnSwitchToGuestPanel.classList.add('active');
@@ -30,9 +34,11 @@ btnSwitchToGuestPanel.addEventListener('click', () => {
 btnSwitchToHostPanel.addEventListener('click', () => {
     hostPanel.classList.add('active');
     btnSwitchToHostPanel.classList.add('active');
+    btnNewOffer.style.display ='flex';
 
     guestPanel.classList.remove('active');
     btnSwitchToGuestPanel.classList.remove('active');
+
 });
 
 avatar.addEventListener('click', () => {
@@ -122,6 +128,10 @@ btnsSave.forEach(button => {
         if (btnCancel) btnCancel.style.display = 'none';
         if (btnChange) btnChange.style.display = 'inline-block';
     });
+});
+
+btnNewOffer.addEventListener('click', () => {
+    window.location.href = 'create_offer.html';
 });
 
 async function sendFieldUpdateToServer(fieldName, fieldValue) {

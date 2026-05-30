@@ -1,0 +1,140 @@
+const offerForm = document.getElementById('new_offer_form');
+const categorySelector = document.getElementById('category_selector');
+const housingBlock = document.getElementById('housing_block');
+const transportBlock = document.getElementById('transport_block');
+const submitBtn = offerForm.querySelector('button[type="submit"]');
+const fileNode = document.getElementById('image_input');
+const benefits = document.getElementById('benefits_input');
+const nameInput = document.getElementById('name_input');
+const priceInput = document.getElementById('price_input');
+const countryInput = document.getElementById('country_input');
+const cityInput = document.getElementById('city_input');
+const descriptionInput = document.getElementById('description_input');
+
+// Inject Common UI Into Placeholders
+document.getElementById('header_placeholder').innerHTML = commonComponents.header;
+document.getElementById('menubar_placeholder').innerHTML = commonComponents.menubar;
+document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
+
+// Authenticate User Session
+checkUserSession();
+
+// Activate Common UI Listeners
+initCommonUI();
+
+categorySelector.addEventListener('change', () => {
+    const selectedCategory = categorySelector.value;
+    const isHousing = ['Apartments', 'Villas', 'Castles'].includes(selectedCategory);
+
+    if (isHousing) {
+        housingBlock.style.display = 'block';
+        transportBlock.style.display = 'none';
+        toggleRequiredConstraints(housingBlock, true);
+        toggleRequiredConstraints(transportBlock, false);
+    } else {
+        housingBlock.style.display = 'none';
+        transportBlock.style.display = 'block';
+        toggleRequiredConstraints(housingBlock, false);
+        toggleRequiredConstraints(transportBlock, true);
+    }
+});
+
+function toggleRequiredConstraints(containerBlock, enableRequired){
+    if(!containerBlock) return;
+
+    containerBlock.querySelectorAll('input').forEach(element => {
+        if(element.type !== 'checkbox') element.required = enableRequired;
+    });
+}
+
+offerForm.addEventListener('submit', async(e) => {
+    e.preventDefault();
+
+    const imageFiles = fileNode ? fileNode.files : [];
+
+    if(!imageFile){
+        alert('Please select a main presentation image for your listing.');
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = `Uploading images (0/${imageFiles.length})...`;
+
+    const uploadedImageUrls = [];
+
+    try{
+
+        for(let i=0; i<imageFiles.length; i++){
+            submitBtn.textContent = `Uploading images (${i+1}/${imageFiles.length})...`;
+
+            const imgData = new FormData(); 
+            imgData.append('image', imageFile[i]);
+
+            const imgResponse = await fetch('php/upload_photo_proxy.php', {
+                method: 'POST',
+                body: imgData
+            });
+
+            const imgResult = await imgResponse.json();
+
+            if(imgResult.status !== 'success'){
+                alert(`Failed to upload image #${i + 1}: ${imgResult.error?.message || 'Server error.'}`);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Publish Offer';
+                return;
+            } else uploadedImageUrls.push(imgResult.url);
+        }
+
+        submitBtn.textContent = 'Publishing offer details...';
+
+        const finalizedBenefitsArray = benefits.value.split(',').map(token => token.trim()).filter(token => token !== '').map(cleanedValue => ({name: cleanedValue}));
+
+        const activeCategory = categorySelector.value;
+        const isHousingCategory = ['Apartments', 'Villas', 'Castles'].includes(activeCategory);
+
+        const data = {
+            category: activeCategory,
+            name: nameInput.value,
+            price: parseFloat(priceInput.value) || 0.00,
+            country: countryInput.value,
+            city: cityInput.value,
+            description: descriptionInput.value,
+            images: uploadedImageUrls,
+            benefits: finalizedBenefitsArray,
+            details: isHousingCategory ? {
+                street: document.getElementById('street_input').value,
+                house_number: document.getElementById('house_number_input').value,
+                rooms: parseInt(document.getElementById('rooms_input').value, 10) || 0,
+                floor: parseInt(document.getElementById('floor_input').value, 10) || 0,
+                area: parseInt(document.getElementById('area_input').value, 10) || 0
+            } : {
+                year: parseInt(document.getElementById('year_input').value, 10) || 0,
+                fuel: document.getElementById('fuel_input').value,
+                transmission: document.getElementById('transmission_input').value,
+                max_speed: parseInt(document.getElementById('max_speed_input').value, 10) || 0,
+                passengers: parseInt(document.getElementById('passengers_input').value, 10) || 0,
+                driver: document.getElementById('driver_input').checked ? 1 : 0
+            }
+        };
+
+        const response = await fetch('php/create_offer.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            alert('Success! Your new listing has been securely published.');
+            window.location.href = 'user_profile.html'; // Gracefully redirect back to client control room panel
+        } else alert('Database ingestion rejection: ' + result.message);
+        
+    }catch(error){
+        console.error('Fatal execution path error on structural forms publishing layer:', error);
+        alert('Critical network pipeline disruption encountered during data transmission paths.');
+    } finally{
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Publish Offer';
+    }
+});

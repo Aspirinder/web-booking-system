@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create new offer</title>
+    <link rel="stylesheet" href="css/create_offer.css">
+</head>
+<body>
+    <div id="header_placeholder"></div>
+    <div id="menubar_placeholder"></div>
+
+    <div class="line"></div>
+
+<main class="create_offer_wrapper">
+        <h1 class="create_page_title">Create New Offer</h1>
+        
+        <form id="new_offer_form" autocomplete="off">
+            <div class="info_card">
+                <div class="card_card_header">
+                    <img src="https://i.ibb.co/hx5WyV7z/person.png" alt="general">
+                    <h3>General Information</h3>
+                </div>
+                <div class="card_body_content">
+                    <div class="grid_2_columns">
+                        <div class="info_meta_group">
+                            <label>Category</label>
+                            <select id="category_selector" required>
+                                <option value="" disabled selected>Select category...</option>
+                                <option value="Apartments">Apartments</option>
+                                <option value="Villas">Villas</option>
+                                <option value="Castles">Castles</option>
+                                <option value="Cars">Cars</option>
+                                <option value="Helicopters">Helicopters</option>
+                                <option value="Airplanes">Airplanes</option>
+                            </select>
+                        </div>
+                        <div class="info_meta_group">
+                            <label>Price per night ($)</label>
+                            <input type="number" id="price_input" step="0.01" placeholder="0.00" min="0.01" required>
+                        </div>
+                    </div>
+                    <div class="info_meta_group">
+                        <label>Title / Name</label>
+                        <input type="text" id="name_input" placeholder="e.g. Luxury Penthouse with Sea View" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info_card">
+                <div class="card_card_header">
+                    <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="location">
+                    <h3>Location</h3>
+                </div>
+                <div class="card_body_content grid_2_columns">
+                    <div class="info_meta_group">
+                        <label>Country</label>
+                        <input type="text" id="country_input" placeholder="Poland" required>
+                    </div>
+                    <div class="info_meta_group">
+                        <label>City</label>
+                        <input type="text" id="city_input" placeholder="Poznan" required>
+                    </div>
+                </div>
+            </div>
+
+            <div id="housing_block" class="info_card" style="display: none;">
+                <div class="card_card_header">
+                    <img src="https://i.ibb.co/Q7sbjLqy/apartment.png" alt="housing">
+                    <h3>Property Details</h3>
+                </div>
+                <div class="card_body_content">
+                    <div class="grid_2_columns">
+                        <div class="info_meta_group" style="flex: 2;">
+                            <label>Street</label>
+                            <input type="text" id="street_input" placeholder="Polwiejska">
+                        </div>
+                        <div class="info_meta_group" style="flex: 1;">
+                            <label>House Number</label>
+                            <input type="text" id="house_number_input" placeholder="12A">
+                        </div>
+                    </div>
+                    <div class="grid_2_columns">
+                        <div class="info_meta_group">
+                            <label>Rooms</label>
+                            <input type="number" id="rooms_input" placeholder="2" min="1">
+                        </div>
+                        <div class="info_meta_group">
+                            <label>Floor</label>
+                            <input type="number" id="floor_input" placeholder="3" min="0">
+                        </div>
+                        <div class="info_meta_group">
+                            <label>Area (m²)</label>
+                            <input type="number" id="area_input" placeholder="65" min="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="transport_block" class="info_card" style="display: none;">
+                <div class="card_card_header">
+                    <img src="https://i.ibb.co/N2SRQ70Z/car.png" alt="transport">
+                    <h3>Vehicle Specifications</h3>
+                </div>
+                <div class="card_body_content">
+                    <div class="grid_2_columns">
+                        <div class="info_meta_group">
+                            <label>Model Year</label>
+                            <input type="number" id="year_input" placeholder="2025" min="1900" max="2027">
+                        </div>
+                        <div class="info_meta_group">
+                            <label>Fuel Type</label>
+                            <input type="text" id="fuel_input" placeholder="Electric / Petrol / Jet Fuel">
+                        </div>
+                    </div>
+                    <div class="grid_2_columns">
+                        <div class="info_meta_group">
+                            <label>Transmission</label>
+                            <input type="text" id="transmission_input" placeholder="Automatic / Manual / None">
+                        </div>
+                        <div class="info_meta_group">
+                            <label>Max Speed (km/h)</label>
+                            <input type="number" id="max_speed_input" placeholder="250" min="1">
+                        </div>
+                    </div>
+                    <div class="grid_2_columns">
+                        <div class="info_meta_group">
+                            <label>Max Passengers</label>
+                            <input type="number" id="passengers_input" placeholder="4" min="1">
+                        </div>
+                        <div class="info_meta_group">
+                            <label class="pay_option">
+                                <input type="checkbox" id="driver_input" value="1">
+                                <span>Driver Included</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info_card">
+                <div class="card_card_header">
+                    <img src="https://i.ibb.co/NvYkdvN/log-out.png" style="transform: rotate(180deg);" alt="features">
+                    <h3>Description & Perks</h3>
+                </div>
+                <div class="card_body_content">
+                    <div class="info_meta_group">
+                        <label>Description</label>
+                        <textarea id="description_input" rows="5" placeholder="Provide a detailed description of your offer..." required></textarea>
+                    </div>
+                    <div class="info_meta_group">
+                        <label>Benefits (Comma separated)</label>
+                        <input type="text" id="benefits_input" placeholder="WiFi, Parking, AC, Pool, Leather Seats">
+                    </div>
+                    <div class="info_meta_group">
+                        <label>Main Image File</label>
+                        <input type="file" id="image_input" accept="image/*" required>
+                        <input type="file" id="image_input" accept="image/*" multiple required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn_confirm_pay btn_publish_large">Publish Offer</button>
+        </form>
+    </main>
+
+    <div id="footer_root_placeholder"></div>
+
+    <script defer src="js/components.js"></script>
+    <script defer src="js/create_offer.js"></script>
+</body>
+</html>

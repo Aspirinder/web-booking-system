@@ -369,7 +369,7 @@ class ModalManager{
         this.loginForm = document.getElementById(this.loginFormId);
         this.regForm = document.getElementById(this.regFormId);
         this.checkoutForm = document.getElementById(this.checkoutFormId);
-        this.bookingDetailsForm = document.getElementById(this.bookingDetailsFormId)
+        this.bookingDetailsForm = document.getElementById(this.bookingDetailsFormId);
 
         this.logModal = document.getElementById('log_modal');
         this.regModal = document.getElementById('reg_modal');
@@ -386,135 +386,145 @@ class ModalManager{
     }
 
     render(){
-        if(document.getElementById('log_modal') || document.getElementById('reg_modal')) return;
+        //if(document.getElementById('log_modal') || document.getElementById('reg_modal')) return;
 
         const container = document.createElement('div');
         container.id = "auth_modals_container";
-        container.innerHTML = `
-            <div id="reg_modal" class="modal">
-            <div class="modal_content">
-                <span class="close_modal">&times;</span>
-                <h2 class="modal_title">Sign Up</h2>
-                <form id="${this.regFormId}" class="reg_form">
-                    <input type="text" id="reg_username" placeholder="Username" required>
-                    <input type="text" id="reg_fullname" placeholder="Name and surname" required>
-                    <input type="email" id="reg_email" placeholder="Email" required>
-                    <input type="password" id="reg_password" placeholder="Password" required>
-                    <button type="submit" class="btn_submit">Create account</button>
-                </form>
-                <p class="result" id="reg_result"></p>
-                <p class="reg_switch">Already have an account? <a href="#" id="switch_to_log">Log In</a></p>
-            </div>
-        </div>
+        if(this.regFormId){
+            container.innerHTML += `
+                <div id="reg_modal" class="modal">
+                    <div class="modal_content">
+                        <span class="close_modal">&times;</span>
+                        <h2 class="modal_title">Sign Up</h2>
+                        <form id="${this.regFormId}" class="reg_form">
+                            <input type="text" id="reg_username" placeholder="Username" required>
+                            <input type="text" id="reg_fullname" placeholder="Name and surname" required>
+                            <input type="email" id="reg_email" placeholder="Email" required>
+                            <input type="password" id="reg_password" placeholder="Password" required>
+                            <button type="submit" class="btn_submit">Create account</button>
+                        </form>
+                        <p class="result" id="reg_result"></p>
+                        <p class="reg_switch">Already have an account? <a href="#" id="switch_to_log">Log In</a></p>
+                    </div>
+                </div>`;
+        }
+        if(this.loginFormId){
+            container.innerHTML += `
+                <div id="log_modal" class="modal">
+                    <div class="modal_content">
+                        <span class="close_modal">&times;</span>
+                        <h2 class="modal_title">Sign In</h2>
+                        <form id="${this.loginFormId}" class="log_form">
+                            <input type="email" id="log_email" placeholder="Email" required>
+                            <input type="password" id="log_password" placeholder="Password" required>
+                            <button type="submit" class="btn_submit">Sign In</button>
+                        </form>
+                        <p class="reg_switch">Don't have an account? <a href="#" id="switch_to_reg">Sign Up</a></p>
+                    </div>
+                </div>`;
+        }
+
+        if(this.checkoutFormId){
+            container.innerHTML += `
+                <div id="checkout_modal" class="modal">
+                    <div class="modal_content checkout_content">
+                        <span class="close_modal">&times;</span>
+                        <h2 class="modal_title">Confirm Booking</h2>
+
+                        <div class="checkout_summary">
+                            <p><strong>Property: </strong><span id="out_offer_name">-</span></p>
+                            <p><strong>Dates: </strong><span id="out_offer_dates">-</span></p>
+                            <p><strong>Total nights: </strong><span id="out_offer_nights">0</span></p>
+                            <hr>
+                            <h3 class="total_price_title">Total price: <span id="out_total_price">0</span></h3>
+                        </div>
+
+                        <form id="${this.checkoutFormId}" class="check_out_form">
+                            <h4 class="payment_title">Select Payment Method:</h4>
+                            <div class="payment_options">
+                                <label class="pay_option">
+                                    <input type="radio" name="payment_method" value="creadit_card" checked>
+                                    <span>Creadit Card</span>
+                                </label>
+                                <label class="pay_option">
+                                    <input type="radio" name="payment_method" value="paypal">
+                                    <span>PayPal</span>
+                                </label>
+                                <label class="pay_option">
+                                    <input type="radio" name="payment_method" value="crypto">
+                                    <span>Cryptocurrency</span>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn_submit btn_confirm_pay">Pay & Book Now</button>
+                        </form>
+                    </div>
+                </div>`;
+        }
+
+        if(this.bookingDetailsFormId){
+            container.innerHTML += `
+                <div id="booking_details_modal" class="modal">
+                    <div class="modal_content booking_details">
+                        <span class="close_modal">&times;</span>
         
-        <div id="log_modal" class="modal">
-            <div class="modal_content">
-                <span class="close_modal">&times;</span>
-                <h2 class="modal_title">Sign In</h2>
-                <form id="${this.loginFormId}" class="log_form">
-                    <input type="email" id="log_email" placeholder="Email" required>
-                    <input type="password" id="log_password" placeholder="Password" required>
-                    <button type="submit" class="btn_submit">Sign In</button>
-                </form>
-                <p class="reg_switch">Don't have an account? <a href="#" id="switch_to_reg">Sign Up</a></p>
-            </div>
-        </div>
-
-        <div id="checkout_modal" class="modal">
-            <div class="modal_content checkout_content">
-                <span class="close_modal">&times;</span>
-                <h2 class="modal_title">Confirm Booking</h2>
-
-                <div class="checkout_summary">
-                    <p><strong>Property: </strong><span id="out_offer_name">-</span></p>
-                    <p><strong>Dates: </strong><span id="out_offer_dates">-</span></p>
-                    <p><strong>Total nights: </strong><span id="out_offer_nights">0</span></p>
-                    <hr>
-                    <h3 class="total_price_title">Total price: <span id="out_total_price">0</span></h3>
-                </div>
-
-                <form id="${this.checkoutFormId}" class="check_out_form">
-                    <h4 class="payment_title">Select Payment Method:</h4>
-                    <div class="payment_options">
-                        <label class="pay_option">
-                            <input type="radio" name="payment_method" value="creadit_card" checked>
-                            <span>Creadit Card</span>
-                        </label>
-                        <label class="pay_option">
-                            <input type="radio" name="payment_method" value="paypal">
-                            <span>PayPal</span>
-                        </label>
-                        <label class="pay_option">
-                            <input type="radio" name="payment_method" value="crypto">
-                            <span>Cryptocurrency</span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn_submit btn_confirm_pay">Pay & Book Now</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="booking_details_modal" class="modal">
-            <div class="modal_content booking_details">
-                <span class="close_modal">&times;</span>
-        
-                <div class="modal_header_section">
-                    <h2 id="md_offer_name" class="offer_link_title">Loading Property...</h2>
-                    <div class="modal_dates_badge">
-                        <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="calendar">
-                        <span id="md_booking_dates">00.00.0000 — 00.00.0000</span>
-                    </div>
-                </div>
-
-                <div class="info_card">
-                    <div class="card_card_header">
-                        <img src="https://i.ibb.co/hx5WyV7z/person.png" alt="host">
-                        <h3>Host Information</h3>
-                    </div>
-                    <div class="card_body_content">
-                        <div class="info_meta_group">
-                            <label>Name</label>
-                            <span id="md_host_name">-</span>
+                        <div class="modal_header_section">
+                            <h2 id="md_offer_name" class="offer_link_title">Loading Property...</h2>
+                            <div class="modal_dates_badge">
+                                <img src="https://i.ibb.co/DHjtJRwW/calendar.png" alt="calendar">
+                                <span id="md_booking_dates">00.00.0000 — 00.00.0000</span>
+                            </div>
                         </div>
-                        <div class="info_meta_group">
-                            <label>Email (Click to copy)</label>
-                            <span id="md_host_email" class="copy_target">-</span>
-                        </div>
-                        <div class="info_meta_group">
-                            <label>Phone (Click to copy)</label>
-                            <span id="md_host_phone" class="copy_target">-</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="info_card">
-                    <div class="card_card_header">
-                        <img src="https://i.ibb.co/NvYkdvN/log-out.png" style="transform: rotate(180deg);" alt="billing">
-                        <h3>Payment & Status</h3>
-                    </div>
-                    <div class="card_body_content grid_2_columns">
-                        <div class="info_meta_group">
-                            <label>Method</label>
-                            <span id="md_payment_method">-</span>
+                        <div class="info_card">
+                            <div class="card_card_header">
+                                <img src="https://i.ibb.co/hx5WyV7z/person.png" alt="host">
+                                <h3>Host Information</h3>
+                            </div>
+                            <div class="card_body_content">
+                                <div class="info_meta_group">
+                                    <label>Name</label>
+                                    <span id="md_host_name">-</span>
+                                </div>
+                                <div class="info_meta_group">
+                                    <label>Email (Click to copy)</label>
+                                    <span id="md_host_email" class="copy_target">-</span>
+                                </div>
+                                <div class="info_meta_group">
+                                    <label>Phone (Click to copy)</label>
+                                    <span id="md_host_phone" class="copy_target">-</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="info_meta_group">
-                            <label>Status</label>
-                            <span id="md_booking_status" class="badge">pending</span>
-                        </div>
-                    </div>
-                    <div class="card_footer_price">
-                        <label>Total Paid</label>
-                        <span id="md_total_price">0.00 $</span>
-                    </div>
-                </div>
 
-                <form id="${this.bookingDetailsFormId}" class="modal_actions">
-                    <button type="submit" id="btn_cancel_booking" class="btn_cancel_booking">Cancel This Booking</button>
-                </form>
-            </div>
-        </div>
-        `;
+                        <div class="info_card">
+                            <div class="card_card_header">
+                                <img src="https://i.ibb.co/NvYkdvN/log-out.png" style="transform: rotate(180deg);" alt="billing">
+                                <h3>Payment & Status</h3>
+                            </div>
+                            <div class="card_body_content grid_2_columns">
+                                <div class="info_meta_group">
+                                    <label>Method</label>
+                                    <span id="md_payment_method">-</span>
+                                </div>
+                                <div class="info_meta_group">
+                                    <label>Status</label>
+                                    <span id="md_booking_status" class="badge">pending</span>
+                                </div>
+                            </div>
+                            <div class="card_footer_price">
+                                <label>Total Paid</label>
+                                <span id="md_total_price">0.00 $</span>
+                            </div>
+                        </div>
+
+                        <form id="${this.bookingDetailsFormId}" class="modal_actions">
+                            <button type="submit" id="btn_cancel_booking" class="btn_cancel_booking">Cancel This Booking</button>
+                        </form>
+                    </div>
+                </div>`;
+        }
+
         document.body.appendChild(container);
     }
 
@@ -531,6 +541,21 @@ class ModalManager{
                 e.preventDefault();
                 this.hadleRegistration(e);
             })
+        }
+
+        if(this.regForm || this.loginForm){
+            // Toggle Between Login/Register
+            this.switchToLog.addEventListener('click', (e) => {
+                e.preventDefault(); // Stop Hash Navigation
+                this.regModal.style.display = 'none';
+                this.logModal.style.display = 'block';
+            });
+
+            this.switchToReg.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.logModal.style.display = 'none';
+                this.regModal.style.display = 'block';
+            });
         }
 
         if(this.checkoutForm){
@@ -550,26 +575,13 @@ class ModalManager{
             });
         }
 
-        // Toggle Between Login/Register
-        this.switchToLog.addEventListener('click', (e) => {
-            e.preventDefault(); // Stop Hash Navigation
-            this.regModal.style.display = 'none';
-            this.logModal.style.display = 'block';
-        });
-
-        this.switchToReg.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.logModal.style.display = 'none';
-            this.regModal.style.display = 'block';
-        });
-
         // Close any Open Modal by Clicking the Cross Icon
         this.closeModals.forEach(button => {
             button.addEventListener('click', () => {
-                this.logModal.style.display ='none';
-                this.regModal.style.display ='none';
-                this.checkoutModal.style.display ='none';
-                this.bookingDetailsModal.style.display ='none';
+                if(this.logModal) this.logModal.style.display ='none';
+                if(this.regModal) this.regModal.style.display ='none';
+                if(this.checkoutModal) this.checkoutModal.style.display ='none';
+                if(this.bookingDetailsModal) this.bookingDetailsModal.style.display ='none';
 
                 const regResult = document.getElementById('reg_result');
                 if(regResult) regResult.innerText = '';

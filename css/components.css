@@ -761,6 +761,234 @@ a{
     color: var(--bright-yellow);
 }
 
+/* New Offer modal */
+
+#new_offer_modal .modal_content {
+    background-color: var(--gray) !important;
+    color: var(--typical-yellow) !important;
+    border: 1px solid var(--typical-yellow);
+    border-radius: 16px;
+    
+    /* ИСПРАВЛЕНО: Увеличиваем ширину (было 480px, делаем шире) */
+    max-width: 580px !important; 
+    width: 90%; /* Адаптивность для небольших экранов */
+    
+    /* ИСПРАВЛЕНО: Меняем положение на экране (поднимаем выше) */
+    margin: 4vh auto !important; /* vh — это проценты от высоты экрана. 4vh — это совсем близко к верху */
+    
+    /* Увеличиваем доступную высоту самой модалки */
+    max-height: 90vh !important; 
+    
+    display: flex;
+    flex-direction: column;
+    padding: 25px !important;
+    box-sizing: border-box;
+    position: relative;
+    text-align: left !important;
+}
+
+/* Заголовок окна и крестик — остаются неподвижными при скролле */
+#new_offer_modal .modal_title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--bright-yellow) !important;
+    margin-top: 0;
+    margin-bottom: 20px;
+    flex-shrink: 0; /* Запрещаем заголовку сжиматься */
+}
+
+/* Сама форма внутри модалки — скроллится, если поля не помещаются */
+#new_offer_modal form {
+    overflow-y: auto; /* Включает внутренний вертикальный скролл */
+    padding-right: 8px; /* Зазор, чтобы контент не прилипал к ползунку */
+    flex-grow: 1; /* Форма забирает всё свободное пространство */
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    
+    /* Плавный скролл для мобильных девайсов и трекпадов */
+    -webkit-overflow-scrolling: touch; 
+}
+
+/* Кастомная стилизация полосы прокрутки внутри формы */
+#new_offer_modal form::-webkit-scrollbar {
+    width: 6px;
+}
+#new_offer_modal form::-webkit-scrollbar-track {
+    background: var(--black);
+    border-radius: 10px;
+}
+#new_offer_modal form::-webkit-scrollbar-thumb {
+    background: var(--light-gray);
+    border-radius: 10px;
+}
+#new_offer_modal form::-webkit-scrollbar-thumb:hover {
+    background: var(--typical-yellow);
+}
+
+/* Компактные карточки секций (общие инфо, локация, перки) */
+#new_offer_modal .info_card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(198, 156, 109, 0.15);
+    border-radius: 12px;
+    padding: 16px !important;
+    margin-bottom: 12px !important;
+    box-sizing: border-box;
+}
+
+/* Элементы ввода: Инпуты, Селекты, Текстареа */
+#new_offer_modal input[type="text"],
+#new_offer_modal input[type="number"],
+#new_offer_modal select,
+#new_offer_modal textarea {
+    background-color: var(--black) !important;
+    border: 1px solid rgba(198, 156, 109, 0.3) !important;
+    color: var(--white) !important;
+    padding: 10px 12px !important;
+    border-radius: 10px !important;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    font-family: inherit;
+    margin-top: 4px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Фокус полей ввода — подсвечиваем фирменным цветом */
+#new_offer_modal input:focus,
+#new_offer_modal select:focus,
+#new_offer_modal textarea:focus {
+    border-color: var(--bright-yellow) !important;
+    box-shadow: 0 0 8px rgba(244, 197, 144, 0.2) !important;
+}
+
+#new_offer_modal textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+/* Стилизация выпадающего списка (кастомная стрелочка) */
+#new_offer_modal select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23C69C6D' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px !important;
+}
+
+/* Двухколоночная сетка для полей (например, Country / City) */
+#new_offer_modal .grid_2_columns {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    gap: 15px !important;
+}
+
+#new_offer_modal .grid_2_columns .info_meta_group {
+    flex: 1 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Кастомный чекбокс для "Driver Included" */
+#new_offer_modal .pay_option {
+    margin-top: 22px; /* Идеальное выравнивание по линии параллельного инпута */
+    height: 40px;
+    box-sizing: border-box;
+    padding: 0 15px;
+    background: var(--black);
+    border: 1px solid rgba(198, 156, 109, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#new_offer_modal .pay_option:hover {
+    border-color: var(--bright-yellow);
+}
+
+#new_offer_modal .pay_option input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--light-gray);
+    border-radius: 4px;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    transition: all 0.2s ease;
+    margin: 0;
+}
+
+#new_offer_modal .pay_option input[type="checkbox"]:checked {
+    border-color: var(--typical-yellow);
+    background: var(--typical-yellow);
+}
+
+#new_offer_modal .pay_option input[type="checkbox"]:checked::before {
+    content: "✓";
+    color: var(--black);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#new_offer_modal .pay_option:has(input[type="checkbox"]:checked) {
+    background: rgba(198, 156, 109, 0.08);
+    border-color: var(--typical-yellow);
+}
+
+/* Оформление загрузчика картинок (File Input) */
+#new_offer_modal input[type="file"] {
+    background: transparent !important;
+    border: none !important;
+    padding: 5px 0 !important;
+    cursor: pointer;
+}
+
+#new_offer_modal input[type="file"]::-webkit-file-upload-button {
+    background: var(--light-gray);
+    border: 1px solid rgba(198, 156, 109, 0.3);
+    color: var(--typical-yellow);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    margin-right: 12px;
+}
+
+#new_offer_modal input[type="file"]::-webkit-file-upload-button:hover {
+    background: var(--typical-yellow);
+    color: var(--black);
+}
+
+#new_offer_modal .btn_confirm_pay {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    flex-shrink: 0; /* Кнопка всегда видна и не сжимается */
+}
+
+/* Анимация плавного появления динамических блоков (Housing/Transport) */
+#new_offer_modal .info_card[style*="display: block"] {
+    animation: fadeIn 0.3s ease forwards;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }

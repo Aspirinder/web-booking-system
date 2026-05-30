@@ -132,12 +132,19 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.profile_tab {
+.profile_wrapper{
     display: flex;
-    gap: 15px;
+    flex-direction: row;
+    align-content: space-between;
     border-bottom: 1px solid #262626;
     padding-bottom: 20px;
     margin-bottom: 30px;
+    width: 100%;
+}
+
+.profile_tab {
+    display: flex;
+    gap: 15px;
 }
 
 .tab_btn {
@@ -150,7 +157,7 @@
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.5px;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
 .tab_btn:hover {
@@ -163,6 +170,11 @@
     border-color: #c69c6d;
     color: #c69c6d;
     box-shadow: 0 0 15px rgba(198, 156, 109, 0.05);
+}
+
+#btn_create_offer{
+    margin-left: auto;
+    display: none;
 }
 
 .tab_panel {
