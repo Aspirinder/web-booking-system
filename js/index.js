@@ -61,7 +61,7 @@ document.getElementById('menubar_placeholder').innerHTML = commonComponents.menu
 document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
 
 // Authenticate User Session
-checkUserSession();
+const isLoggedIn = checkUserSession();
 window.modalManager = new ModalManager('log_form', 'reg_form', '', '');
 
 // Activate Common UI Listeners

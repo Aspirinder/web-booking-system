@@ -4,12 +4,12 @@ const housingBlock = document.getElementById('housing_block');
 const transportBlock = document.getElementById('transport_block');
 const submitBtn = offerForm.querySelector('button[type="submit"]');
 const fileNode = document.getElementById('image_input');
-const benefits = document.getElementById('benefits_input');
 const nameInput = document.getElementById('name_input');
 const priceInput = document.getElementById('price_input');
 const countryInput = document.getElementById('country_input');
 const cityInput = document.getElementById('city_input');
 const descriptionInput = document.getElementById('description_input');
+const benefitsContainer = document.getElementById('benefits_checkboxes_container');
 
 // Inject Common UI Into Placeholders
 document.getElementById('header_placeholder').innerHTML = commonComponents.header;
@@ -17,7 +17,13 @@ document.getElementById('menubar_placeholder').innerHTML = commonComponents.menu
 document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
 
 // Authenticate User Session
-checkUserSession();
+checkUserSession().then(isLoggedIn => {
+    if(!isLoggedIn){
+        window.location.href = 'index.html';
+        throw new Error("Execution stopped: Unauthorized user.");
+}
+});
+
 
 // Activate Common UI Listeners
 initCommonUI();
@@ -37,6 +43,8 @@ categorySelector.addEventListener('change', () => {
         toggleRequiredConstraints(housingBlock, false);
         toggleRequiredConstraints(transportBlock, true);
     }
+
+    loadSystemBenefits(isHousing);
 });
 
 function toggleRequiredConstraints(containerBlock, enableRequired){
@@ -52,7 +60,7 @@ offerForm.addEventListener('submit', async(e) => {
 
     const imageFiles = fileNode ? fileNode.files : [];
 
-    if(!imageFile){
+    if(!imageFiles){
         alert('Please select a main presentation image for your listing.');
         return;
     }
@@ -68,7 +76,7 @@ offerForm.addEventListener('submit', async(e) => {
             submitBtn.textContent = `Uploading images (${i+1}/${imageFiles.length})...`;
 
             const imgData = new FormData(); 
-            imgData.append('image', imageFile[i]);
+            imgData.append('image', imageFiles[i]);
 
             const imgResponse = await fetch('php/upload_photo_proxy.php', {
                 method: 'POST',
@@ -87,7 +95,15 @@ offerForm.addEventListener('submit', async(e) => {
 
         submitBtn.textContent = 'Publishing offer details...';
 
-        const finalizedBenefitsArray = benefits.value.split(',').map(token => token.trim()).filter(token => token !== '').map(cleanedValue => ({name: cleanedValue}));
+        const checkedBoxes = document.querySelectorAll('input[name="selected_benefits"]:checked');
+        const finalizedBenefitsArray = [];
+
+        checkedBoxes.forEach(box => {
+            finalizedBenefitsArray.push({
+                id: parseInt(box.value, 10),
+                name: box.dataset.name
+            });
+        });
 
         const activeCategory = categorySelector.value;
         const isHousingCategory = ['Apartments', 'Villas', 'Castles'].includes(activeCategory);
@@ -138,3 +154,48 @@ offerForm.addEventListener('submit', async(e) => {
         submitBtn.textContent = 'Publish Offer';
     }
 });
+
+async function loadSystemBenefits(isHousing) {
+    try{
+        const response = await fetch('php/get_benefits.php');
+        const result = await response.json();
+
+        if (!benefitsContainer) return;
+        benefitsContainer.innerHTML = '';
+
+        const benefitsList = Array.isArray(result) ? result : result.benefits || [];
+
+        if (benefitsList.length === 0) {
+            benefitsContainer.innerHTML = '<div class="loading_placeholder">No system perks found.</div>';
+            return;
+        }
+
+        benefitsList.forEach(b => {
+
+            if(b.benefit_id === '1') return;
+
+            if(isHousing) { 
+                if(b.category !== 'realty') return;
+            }
+            else {
+                if(b.category === 'realty') return;
+            }
+                
+            const id = b.benefit_id || b.id;
+            const name = b.name;
+
+            benefitsContainer.innerHTML += `
+                <label class="perk_check_item">
+                    <input type="checkbox" name="selected_benefits" value="${b.benefit_id}" data-name="${b.name}">
+                    <span>${name}</span>
+                </label>
+            `;
+        });
+
+    } catch (error) {
+        console.error('Error fetching global system benefits:', error);
+        if (benefitsContainer) {
+            benefitsContainer.innerHTML = '<div class="loading_placeholder" style="color:red;">Failed to load perks.</div>';
+        }
+    }
+}

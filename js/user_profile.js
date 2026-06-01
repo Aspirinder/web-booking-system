@@ -17,7 +17,13 @@ document.getElementById('menubar_placeholder').innerHTML = commonComponents.menu
 document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
 
 initCommonUI();
-checkUserSession();
+// Authenticate User Session
+checkUserSession().then(isLoggedIn => {
+    if(!isLoggedIn){
+        window.location.href = 'index.html';
+        //throw new Error("Execution stopped: Unauthorized user.");
+}
+});
 loadUserProfile();
 
 window.modalManager = new ModalManager('', '', '', 'booking_details_form');
@@ -162,7 +168,6 @@ async function loadUserProfile() {
         const data = await response.json();
 
         if (data.status === 'error') {
-            alert('Session expired or error: ' + data.message);
             window.location.href = 'index.html';
             return;
         }

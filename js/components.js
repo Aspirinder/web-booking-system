@@ -720,8 +720,13 @@ async function checkUserSession() {
         const response = await fetch('php/check_auth.php');
         const data = await response.json();
         // Change Interface if Session is
-        if(data.isLoggedIn) updateHeaderForUser(data.userId);
+        if(data.isLoggedIn) {
+            updateHeaderForUser(data.userId);
+            return true;
+        }else return false;
+
     }catch(error) {console.error("Auth check failed: ", error);}
+
 }
 
 // Change Interface if Logined

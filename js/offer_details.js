@@ -17,7 +17,7 @@ document.getElementById('menubar_placeholder').innerHTML = commonComponents.menu
 document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
 
 initCommonUI();
-checkUserSession();
+const isLoggedIn = checkUserSession();
 window.modalManager = new ModalManager('log_form', 'reg_form', 'checkout_payment_form', '');
 
 const urlParam = new URLSearchParams(window.location.search);

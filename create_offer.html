@@ -70,17 +70,19 @@
                     <h3>Property Details</h3>
                 </div>
                 <div class="card_body_content">
-                    <div class="grid_2_columns">
-                        <div class="info_meta_group" style="flex: 2;">
+        
+                    <div class="row_street_house">
+                        <div class="info_meta_group street_col">
                             <label>Street</label>
                             <input type="text" id="street_input" placeholder="Polwiejska">
                         </div>
-                        <div class="info_meta_group" style="flex: 1;">
+                        <div class="info_meta_group house_col">
                             <label>House Number</label>
                             <input type="text" id="house_number_input" placeholder="12A">
                         </div>
                     </div>
-                    <div class="grid_2_columns">
+
+                    <div class="row_housing_details">
                         <div class="info_meta_group">
                             <label>Rooms</label>
                             <input type="number" id="rooms_input" placeholder="2" min="1">
@@ -94,6 +96,7 @@
                             <input type="number" id="area_input" placeholder="65" min="1">
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -148,13 +151,16 @@
                         <label>Description</label>
                         <textarea id="description_input" rows="5" placeholder="Provide a detailed description of your offer..." required></textarea>
                     </div>
+        
                     <div class="info_meta_group">
-                        <label>Benefits (Comma separated)</label>
-                        <input type="text" id="benefits_input" placeholder="WiFi, Parking, AC, Pool, Leather Seats">
+                        <label>Select Key Amenities & Perks</label>
+                        <div id="benefits_checkboxes_container" class="benefits_grid_layout">
+                            <div class="loading_placeholder">Loading system perks...</div>
+                        </div>
                     </div>
+        
                     <div class="info_meta_group">
-                        <label>Main Image File</label>
-                        <input type="file" id="image_input" accept="image/*" required>
+                        <label>Images</label>
                         <input type="file" id="image_input" accept="image/*" multiple required>
                     </div>
                 </div>
