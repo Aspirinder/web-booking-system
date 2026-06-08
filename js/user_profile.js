@@ -1,3 +1,4 @@
+// DOM Element Nodes Initialization
 const btnSwitchToGuestPanel = document.getElementById('btn_switch_to_guest_panel');
 const btnSwitchToHostPanel = document.getElementById('btn_switch_to_host_panel');
 const btnNewOffer = document.getElementById('btn_create_offer');
@@ -8,10 +9,12 @@ const avatar = document.getElementById('user_avatar_img');
 const bookingsContainer = document.getElementById('bookings_list_container');
 const myOffersContainer = document.getElementById('offers_list_container');
 
+// Form Edit Controls Selection Groups 
 const btnsChange = document.querySelectorAll('.btn_update');
 const btnsSave = document.querySelectorAll('.btn_save');
 const btnsCancel = document.querySelectorAll('.btn_cancel');
 
+// Global UI Components Injection
 document.getElementById('header_placeholder').innerHTML = commonComponents.header;
 document.getElementById('menubar_placeholder').innerHTML = commonComponents.menubar;
 document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
@@ -27,7 +30,9 @@ checkUserSession().then(isLoggedIn => {
 loadUserProfile();
 
 window.modalManager = new ModalManager('', '', '', 'booking_details_form');
+const housingCategories = ['Apartments', 'Villas', 'Castles'];
 
+// Switch active dashboard viewport state to Guest panel mode
 btnSwitchToGuestPanel.addEventListener('click', () => {
     hostPanel.classList.remove('active');
     btnSwitchToHostPanel.classList.remove('active');
@@ -37,6 +42,7 @@ btnSwitchToGuestPanel.addEventListener('click', () => {
     btnSwitchToGuestPanel.classList.add('active');
 });
 
+// Switch active dashboard viewport state to Host panel mode
 btnSwitchToHostPanel.addEventListener('click', () => {
     hostPanel.classList.add('active');
     btnSwitchToHostPanel.classList.add('active');
@@ -47,22 +53,26 @@ btnSwitchToHostPanel.addEventListener('click', () => {
 
 });
 
+// Handles clicking the user avatar image element to trigger a local file upload sequence
 avatar.addEventListener('click', () => {
     const fileInput = document.createElement('input');
 
     fileInput.type = 'file';
     fileInput.accept = 'image/*';
 
+    // Execution path firing once file selection completes
     fileInput.addEventListener('change', async () => {
         const file = fileInput.files[0];
         if(!file) return;
 
+        // Provide immediate visual pending feedback status
         avatar.style.opacity = '0.5';
 
         try{
             const formData = new FormData();
             formData.append('image', file);
 
+            // Stream multi-part imagery binary data payload to server proxy endpoints
             const response = await fetch(`php/upload_avatar_proxy.php`, {
                 method: 'POST',
                 body: formData
@@ -70,6 +80,7 @@ avatar.addEventListener('click', () => {
 
             const imgbbResult = await response.json();
 
+            // Refresh layout target source context upon success response
             if(imgbbResult.status === 'success') avatar.src = imgbbResult.url;
             else console.error('ImgBB upload failed: ' + imgbbResult.error.message);
 
@@ -77,9 +88,11 @@ avatar.addEventListener('click', () => {
         finally{avatar.style.opacity = '1';}
     });
 
+    // Simulate mouse interaction to launch native operating system upload selection window
     fileInput.click();
 });
 
+// Activate interactive states and highlight fields for focused inline updates
 btnsChange.forEach(button => {
     button.addEventListener('click', () => {
         const type = button.dataset.type;
@@ -96,6 +109,7 @@ btnsChange.forEach(button => {
     });
 });
 
+// Discard local text input modification steps and revert back to matching source values
 btnsCancel.forEach(button => {
     button.addEventListener('click', () => {
         const type = button.dataset.type;
@@ -111,6 +125,7 @@ btnsCancel.forEach(button => {
     });
 });
 
+// Perform async validations and commit verified inline fields changes to database
 btnsSave.forEach(button => {
     button.addEventListener('click', async () => {
         const type = button.dataset.type;
@@ -123,6 +138,7 @@ btnsSave.forEach(button => {
 
         if (!newValue) return;
 
+        // Dispatch modified value changes to remote storage endpoints if variations exist
         if (newValue !== input.dataset.oldValue) {
             const success = await sendFieldUpdateToServer(type, newValue);
             if (success) input.dataset.oldValue = newValue;
@@ -136,10 +152,12 @@ btnsSave.forEach(button => {
     });
 });
 
+// Route interaction contexts toward creation forms interface
 btnNewOffer.addEventListener('click', () => {
     window.location.href = 'create_offer.html';
 });
 
+// Dispatches specific profile updates packets to secure relational backends via JSON streams
 async function sendFieldUpdateToServer(fieldName, fieldValue) {
     try {
         const response = await fetch('php/update_user_profile.php', {
@@ -162,16 +180,19 @@ async function sendFieldUpdateToServer(fieldName, fieldValue) {
     }
 }
 
+// Handles initial workspace generation, fetching related profile entries bundles asynchronously
 async function loadUserProfile() {
     try {
         const response = await fetch('php/get_user_profile_info.php');
         const data = await response.json();
 
+        // Perform quiet routing to root directory if server rejects profile credentials
         if (data.status === 'error') {
             window.location.href = 'index.html';
             return;
         }
 
+        // Initialize state markers for user credential input fields
         setupInputState('edit_username', data.userInfo.username);
         setupInputState('edit_fullname', data.userInfo.fullname);
         setupInputState('edit_email', data.userInfo.email);
@@ -186,6 +207,7 @@ async function loadUserProfile() {
     }
 }
 
+// Standardizes default attributes for text input nodes to enforce read-only protection
 function setupInputState(fieldId, value){
     const input = document.getElementById(fieldId);
     if(input){
@@ -195,14 +217,17 @@ function setupInputState(fieldId, value){
     }
 }
 
+// Dynamically builds the client-side bookings historical transactions dataset view panels list
 function renderBookings(bookings){
     bookingsContainer.innerHTML = '';
 
+    // Display appropriate placeholder if tracking datasets are empty
     if(!bookings || bookings.length === 0){
         bookingsContainer.innerHTML = `<div class="no_data_placeholder">You don't have any bookings yet.</div>`;
         return;
     }
 
+    // Parse and render historical entries records matching internal categories rules
     bookings.forEach(b => {
         let category;
         if(b.category === 'Apartments') category = document.querySelectorAll('.btn_menu img')[4].src;
@@ -225,6 +250,7 @@ function renderBookings(bookings){
         `;
     });
 
+    // Attach dynamic details modal event hooks to individual generated card nodes
     const bookingsList = document.querySelectorAll('.list_booking_card');
     bookingsList.forEach(card => {
         card.addEventListener('click', () => {
@@ -234,14 +260,17 @@ function renderBookings(bookings){
     });
 }
 
+// Generates and appends host-owned offers listings management layout panels list
 function renderMyOffers(offers){
     myOffersContainer.innerHTML = '';
 
+    // Display appropriate placeholder if tracking datasets are empty
     if (!offers || offers.length === 0) {
         myOffersContainer.innerHTML = '<div class="no_data_placeholder">You haven\'t listed any properties yet.</div>';
         return;
     }
 
+    // Hydrate host offerings grid sections matching architectural guidelines layout structures
     offers.forEach(o => {
         myOffersContainer.innerHTML +=`
             <div class="list_my_offer_card">
@@ -250,13 +279,14 @@ function renderMyOffers(offers){
                     <p>📍 ${o.city}, ${o.country}</p>
                 </div>
                 <div class="item_status_price">
-                    <div class="price_tag">${o.price} / night</div>
+                    <div class="price_tag">${o.price} $ / ${housingCategories.includes(o.category) ? 'night' : 'day'}</div>
                 </div>
             </div>
         `;
     });
 }
 
+// Utility translation dictionary mapper to match currency ISO codes to unique shorthand characters symbols
 function getCurrencySymbol(currencyCode) {
     if (!currencyCode) return '';
 

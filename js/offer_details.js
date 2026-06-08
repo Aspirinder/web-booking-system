@@ -1,3 +1,4 @@
+// DOM Element Nodes Initialization
 const offerContainer = document.getElementById('offer_container');
 const imgElement = document.getElementById('slider_img');
 const counterElement = document.getElementById('current_num_photo');
@@ -12,24 +13,37 @@ const price = document.getElementById('price_big');
 const btnBookNow =document.getElementById('btn_book_now');
 const title = document.getElementById('title');
 
+// Global UI Components Injection
 document.getElementById('header_placeholder').innerHTML = commonComponents.header;
 document.getElementById('menubar_placeholder').innerHTML = commonComponents.menubar;
 document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
 
+// Initialize Core Shared UI Events
 initCommonUI();
+
+// Check user authorization token silently on page load
 const isLoggedIn = checkUserSession();
+
+// Instantiate global authentications and checkout payment structures
 window.modalManager = new ModalManager('log_form', 'reg_form', 'checkout_payment_form', '');
 
+// URL Query Parameters Extraction
 const urlParam = new URLSearchParams(window.location.search);
 const offerId = urlParam.get('id');
 offerCheckIn = urlParam.get('checkin');
 offerCheckOut = urlParam.get('checkout');
+const housingCategories = ['Apartments', 'Villas', 'Castles'];
 
+// Ingest listing profile payload data
 renderDetails(offerId);
 
+// Fetches targeted listing data stream from backend and hydrates HTML components
 async function renderDetails(offerId){
+    // Edge-case fallback if unique target key parameter missing
     if(!offerId){offerContainer.innerHTML = "<h2>Offer not found</h2>"; return;}
 
+
+    // Pull database metadata bundle via operational proxy
     const response = await fetch(`php/get_selected_offer.php?id=${offerId}`).catch(err => console.error("Error loading details: ", err));;
     const item = await response.json();
 
@@ -37,38 +51,56 @@ async function renderDetails(offerId){
     window.currentPhotos = allPhotos;
     window.photoIndex = 0;
 
+    // Calculate currency conversion matrix utilizing active LocalStorage settings
     const rate = JSON.parse(localStorage.getItem('exchangeRates'))[localStorage.getItem('currentCurrency')] || 1;
     const convertedPrice = (item.price * rate).toFixed(2);
 
+    // Differentiate categorical archetype to parse specialized mapping blocks
+    const isHousing = housingCategories.includes(item.category) ? true : false;
+
     // Fill html
     ratingValue.textContent = item.rating ? parseFloat(item.rating).toFixed(1) : "0.0";
-    offerLocation.href = `https://www.google.com/maps/search/?api=1&query=
-    ${encodeURIComponent(item.details.house_number + ', ' + item.details.street + ', ' + item.city + ', ' + item.country)}`;
-    offerLocation.textContent = `${item.details.house_number } ${item.details.street}, ${item.city} / ${item.country}`
+    if(isHousing){
+        offerLocation.href = `https://www.google.com/maps/search/?api=1&query=
+            ${encodeURIComponent(item.details.house_number + ', ' + item.details.street + ', ' + item.city + ', ' + item.country)}`;
+        offerLocation.textContent = `${item.details.house_number } ${item.details.street}, ${item.city} / ${item.country}`;
+    }else{
+        offerLocation.href = `https://www.google.com/maps/search/?api=1&query=
+            ${encodeURIComponent(item.city + ', ' + item.country)}`;
+        offerLocation.textContent = `${item.city} / ${item.country}`;
+    }
+    
     btn_next.textContent = '>'; btn_prev.textContent = '<';
 
     btn_next.addEventListener('click', () => changePhoto(1));
     btn_prev.addEventListener('click', () => changePhoto(-1));
+
+    // Set initial layout thumbnail values
     imgElement.src = allPhotos[0]; imgElement.alt = item.name;
     counterElement.textContent = `1 / ${allPhotos.length}`;
     benefitsList.innerHTML = item.benefits.map(b => `<span class="benefit_pill">${b.name}</span>`).join('');
     description.textContent = item.description;
-    price.textContent = `${convertedPrice} ${localStorage.getItem('currentSymbol')} / night`;
+
+    price.textContent = `${convertedPrice} ${localStorage.getItem('currentSymbol')} / ${isHousing ? 'night' : 'day'}`;
     btnBookNow.addEventListener('click', (e) => startBooking(item.offer_id, e));
     title.textContent = item.name;
 
+    // Pre-populate processing calendars inputs if timeline filters persist
     if(offerCheckIn) inputBookingCheckIn.value = offerCheckIn;
     if(offerCheckOut) inputBookingCheckOut.value = offerCheckOut; 
 
     window.offerDetailsCalendar = new CustomCalendar('booking_check_in', 'booking_check_out', item.bookings || []);
 }
 
+
+// Handles sliding carousel state changes using a clean opacity fade out transition
 function changePhoto(direction){
     imgElement.style.opacity = '0';
 
     setTimeout(() =>{
         window.photoIndex += direction;
 
+        // Perform loop boundary condition checks
         if (window.photoIndex >= window.currentPhotos.length) {
             window.photoIndex = 0;
         }
@@ -76,6 +108,7 @@ function changePhoto(direction){
             window.photoIndex = window.currentPhotos.length - 1;
         }
 
+        // Hydrate next media link targets
         imgElement.src = window.currentPhotos[window.photoIndex];
         counterElement.innerText = `${window.photoIndex + 1} / ${window.currentPhotos.length}`
         
@@ -83,11 +116,14 @@ function changePhoto(direction){
     }, 400);
 }
 
+// Validates tracking variables pipelines and executes secure payment processing setups
 async function startBooking(offer_id, e) {
+    // Intercept checkout request if user dates parameters missing
     if(inputBookingCheckIn.value === ""){window.offerDetailsCalendar.openModal(e); return;}
     if(inputBookingCheckOut.value === ""){window.offerDetailsCalendar.openModal(e); return;}
 
     try{
+        // Enforce active server session security checks prior to parsing payments
         const response = await fetch('php/check_auth.php');
         const data = await response.json();
 
@@ -96,6 +132,7 @@ async function startBooking(offer_id, e) {
             return;
         }
 
+        // Compute delta timestamp duration value configurations
         const dateIn = new Date(inputBookingCheckIn.value);
         const dateOut = new Date(inputBookingCheckOut.value);
         const nights = Math.ceil(Math.abs(dateOut-dateIn) / (1000 * 60 * 60 * 24));
@@ -106,6 +143,7 @@ async function startBooking(offer_id, e) {
         const currencySymbol = localStorage.getItem('currentSymbol');
         const offerName = title.textContent;
 
+        // Dispatch variables structures into global invoice view controller
         if(window.modalManager){
             window.modalManager.fillCheckout({
                 offerName: offerName,
@@ -131,6 +169,7 @@ async function startBooking(offer_id, e) {
 
                     const bookingResult = await bookingResponce.json();
 
+                    // Route user profile view upon successful transaction validations
                     if(bookingResult.status === "success"){
                         window.location = `user_profile.html`
                     }else{

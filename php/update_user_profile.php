@@ -1,12 +1,13 @@
 <?php
-include 'db.php';
 
+// Step 1: Securely load core database connection config handler
 include 'db.php';
 
 session_start();
 
 header('Content-Type: application/json; charset=utf-8');
 
+// Security Guard: Authenticate active session
 if(!isset($_SESSION['user_id'])){
     echo json_encode([
         'status' => 'error',
@@ -17,6 +18,7 @@ if(!isset($_SESSION['user_id'])){
 
 $userId = $_SESSION['user_id'];
 
+// Payload Validation: Parse and verify raw JSON input stream
 $inputData = file_get_contents('php://input');
 $data = json_decode($inputData, true);
 
@@ -31,6 +33,7 @@ if (empty($data['field']) || !isset($data['value'])) {
 $fieldName = trim($data['field']);
 $fieldValue = trim($data['value']);
 
+// Security Guard: Explicit structural whitelist mapping for column updates
 $allowedFields = [
     'username' => 'username',
     'fullname' => 'fullname',
@@ -47,6 +50,7 @@ if (!array_key_exists($fieldName, $allowedFields)) {
 
 $dbColumn = $allowedFields[$fieldName];
 
+// Validate semantic correctness if processing email updates paths
 if ($fieldName === 'email' && !filter_var($fieldValue, FILTER_VALIDATE_EMAIL)) {
     echo json_encode([
         'status' => 'error',
@@ -56,6 +60,7 @@ if ($fieldName === 'email' && !filter_var($fieldValue, FILTER_VALIDATE_EMAIL)) {
 }
 
 try {
+    // Step 2: Check for credential duplicates cross-referencing other user records
     if ($fieldName === 'username' || $fieldName === 'email') {
         $uniqueSql = "SELECT user_id FROM users WHERE {$dbColumn} = ? AND user_id != ?";
         $uniqueStmt = $conn->prepare($uniqueSql);
@@ -72,10 +77,10 @@ try {
         }
     }
 
+    // Step 3: Execute target status record modification via dynamic variables queries
     $updateSql = "UPDATE users SET {$dbColumn} = ? WHERE user_id = ?";
     $updateStmt = $conn->prepare($updateSql);
     $updateStmt->bind_param("si", $fieldValue, $userId);
-    $updateStmt->execute();
 
     if ($updateStmt->execute()) {
         echo json_encode([
@@ -90,6 +95,7 @@ try {
     }
 
 } catch (Exception $e) {
+    // Structural fallback path to catch database transmission issues safely
     echo json_encode([
         'status' => 'error',
         'message' => 'DB error: ' . $e->getMessage()

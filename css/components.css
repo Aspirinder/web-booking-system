@@ -769,14 +769,11 @@ a{
     border: 1px solid var(--typical-yellow);
     border-radius: 16px;
     
-    /* ИСПРАВЛЕНО: Увеличиваем ширину (было 480px, делаем шире) */
     max-width: 580px !important; 
-    width: 90%; /* Адаптивность для небольших экранов */
+    width: 90%;
     
-    /* ИСПРАВЛЕНО: Меняем положение на экране (поднимаем выше) */
-    margin: 4vh auto !important; /* vh — это проценты от высоты экрана. 4vh — это совсем близко к верху */
+    margin: 4vh auto !important;
     
-    /* Увеличиваем доступную высоту самой модалки */
     max-height: 90vh !important; 
     
     display: flex;
@@ -787,30 +784,26 @@ a{
     text-align: left !important;
 }
 
-/* Заголовок окна и крестик — остаются неподвижными при скролле */
 #new_offer_modal .modal_title {
     font-size: 24px;
     font-weight: 700;
     color: var(--bright-yellow) !important;
     margin-top: 0;
     margin-bottom: 20px;
-    flex-shrink: 0; /* Запрещаем заголовку сжиматься */
+    flex-shrink: 0;
 }
 
-/* Сама форма внутри модалки — скроллится, если поля не помещаются */
 #new_offer_modal form {
-    overflow-y: auto; /* Включает внутренний вертикальный скролл */
-    padding-right: 8px; /* Зазор, чтобы контент не прилипал к ползунку */
-    flex-grow: 1; /* Форма забирает всё свободное пространство */
+    overflow-y: auto;
+    padding-right: 8px;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 4px;
     
-    /* Плавный скролл для мобильных девайсов и трекпадов */
     -webkit-overflow-scrolling: touch; 
 }
 
-/* Кастомная стилизация полосы прокрутки внутри формы */
 #new_offer_modal form::-webkit-scrollbar {
     width: 6px;
 }
@@ -826,7 +819,6 @@ a{
     background: var(--typical-yellow);
 }
 
-/* Компактные карточки секций (общие инфо, локация, перки) */
 #new_offer_modal .info_card {
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(198, 156, 109, 0.15);
@@ -836,7 +828,6 @@ a{
     box-sizing: border-box;
 }
 
-/* Элементы ввода: Инпуты, Селекты, Текстареа */
 #new_offer_modal input[type="text"],
 #new_offer_modal input[type="number"],
 #new_offer_modal select,
@@ -855,7 +846,6 @@ a{
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Фокус полей ввода — подсвечиваем фирменным цветом */
 #new_offer_modal input:focus,
 #new_offer_modal select:focus,
 #new_offer_modal textarea:focus {
@@ -868,7 +858,6 @@ a{
     min-height: 70px;
 }
 
-/* Стилизация выпадающего списка (кастомная стрелочка) */
 #new_offer_modal select {
     cursor: pointer;
     appearance: none;
@@ -879,7 +868,6 @@ a{
     padding-right: 40px !important;
 }
 
-/* Двухколоночная сетка для полей (например, Country / City) */
 #new_offer_modal .grid_2_columns {
     display: flex !important;
     flex-direction: row !important;
@@ -893,9 +881,8 @@ a{
     flex-direction: column;
 }
 
-/* Кастомный чекбокс для "Driver Included" */
 #new_offer_modal .pay_option {
-    margin-top: 22px; /* Идеальное выравнивание по линии параллельного инпута */
+    margin-top: 22px;
     height: 40px;
     box-sizing: border-box;
     padding: 0 15px;
@@ -946,7 +933,6 @@ a{
     border-color: var(--typical-yellow);
 }
 
-/* Оформление загрузчика картинок (File Input) */
 #new_offer_modal input[type="file"] {
     background: transparent !important;
     border: none !important;
@@ -981,10 +967,9 @@ a{
     text-transform: uppercase;
     margin-top: 15px;
     margin-bottom: 5px;
-    flex-shrink: 0; /* Кнопка всегда видна и не сжимается */
+    flex-shrink: 0;
 }
 
-/* Анимация плавного появления динамических блоков (Housing/Transport) */
 #new_offer_modal .info_card[style*="display: block"] {
     animation: fadeIn 0.3s ease forwards;
 }

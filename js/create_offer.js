@@ -1,3 +1,4 @@
+// DOM Element Nodes Initialization
 const offerForm = document.getElementById('new_offer_form');
 const categorySelector = document.getElementById('category_selector');
 const housingBlock = document.getElementById('housing_block');
@@ -28,10 +29,12 @@ checkUserSession().then(isLoggedIn => {
 // Activate Common UI Listeners
 initCommonUI();
 
+// Listens for category selection shifts to dynamically structure the form layout
 categorySelector.addEventListener('change', () => {
     const selectedCategory = categorySelector.value;
     const isHousing = ['Apartments', 'Villas', 'Castles'].includes(selectedCategory);
 
+    // Toggle target block visibility and sync input constraints
     if (isHousing) {
         housingBlock.style.display = 'block';
         transportBlock.style.display = 'none';
@@ -44,9 +47,11 @@ categorySelector.addEventListener('change', () => {
         toggleRequiredConstraints(transportBlock, true);
     }
 
+    // Refresh the filtered checklist grid matching the selected archetype
     loadSystemBenefits(isHousing);
 });
 
+// Dynamically toggles the 'required' attributes for nested inputs based on visibility
 function toggleRequiredConstraints(containerBlock, enableRequired){
     if(!containerBlock) return;
 
@@ -55,6 +60,7 @@ function toggleRequiredConstraints(containerBlock, enableRequired){
     });
 }
 
+// Main Form
 offerForm.addEventListener('submit', async(e) => {
     e.preventDefault();
 
@@ -65,13 +71,14 @@ offerForm.addEventListener('submit', async(e) => {
         return;
     }
 
+    // Ensure at least one media presentation layer exists
     submitBtn.disabled = true;
     submitBtn.textContent = `Uploading images (0/${imageFiles.length})...`;
 
     const uploadedImageUrls = [];
 
     try{
-
+        // Step 1: Batch upload images via proxy stream loop sequentially
         for(let i=0; i<imageFiles.length; i++){
             submitBtn.textContent = `Uploading images (${i+1}/${imageFiles.length})...`;
 
@@ -85,6 +92,7 @@ offerForm.addEventListener('submit', async(e) => {
 
             const imgResult = await imgResponse.json();
 
+            // Intercept process flow if proxy upload pipeline breaks down
             if(imgResult.status !== 'success'){
                 alert(`Failed to upload image #${i + 1}: ${imgResult.error?.message || 'Server error.'}`);
                 submitBtn.disabled = false;
@@ -95,6 +103,7 @@ offerForm.addEventListener('submit', async(e) => {
 
         submitBtn.textContent = 'Publishing offer details...';
 
+        // Step 2: Query active DOM states to parse checked amenities arrays
         const checkedBoxes = document.querySelectorAll('input[name="selected_benefits"]:checked');
         const finalizedBenefitsArray = [];
 
@@ -105,9 +114,11 @@ offerForm.addEventListener('submit', async(e) => {
             });
         });
 
+        // Step 3: Compile dynamic fields based on active category context
         const activeCategory = categorySelector.value;
         const isHousingCategory = ['Apartments', 'Villas', 'Castles'].includes(activeCategory);
 
+        // Construct standardized hybrid structural payload packet
         const data = {
             category: activeCategory,
             name: nameInput.value,
@@ -133,6 +144,7 @@ offerForm.addEventListener('submit', async(e) => {
             }
         };
 
+        // Step 4: Dispatch data packet stream to persistent relational tables via transactional endpoint
         const response = await fetch('php/create_offer.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json; charset=utf-8' },
@@ -141,6 +153,7 @@ offerForm.addEventListener('submit', async(e) => {
 
         const result = await response.json();
 
+        // Step 5: Route context back to user space dashboard panel upon success verification
         if (result.status === 'success') {
             alert('Success! Your new listing has been securely published.');
             window.location.href = 'user_profile.html'; // Gracefully redirect back to client control room panel
@@ -155,6 +168,7 @@ offerForm.addEventListener('submit', async(e) => {
     }
 });
 
+// Loads and filters relational system amenities checklist checkboxes dynamically
 async function loadSystemBenefits(isHousing) {
     try{
         const response = await fetch('php/get_benefits.php');
@@ -163,6 +177,7 @@ async function loadSystemBenefits(isHousing) {
         if (!benefitsContainer) return;
         benefitsContainer.innerHTML = '';
 
+        // Safe layout fallback translation check
         const benefitsList = Array.isArray(result) ? result : result.benefits || [];
 
         if (benefitsList.length === 0) {
@@ -172,6 +187,7 @@ async function loadSystemBenefits(isHousing) {
 
         benefitsList.forEach(b => {
 
+            // Skip database tracking icon node placeholder config block (Id: 1)
             if(b.benefit_id === '1') return;
 
             if(isHousing) { 

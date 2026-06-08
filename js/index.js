@@ -48,6 +48,7 @@ let selectedBenefits = [];
 let currentOffset = 0;
 let sortBy = 'recommendations';
 let isSearch = false; // Tracks if User is Viewing Search Results or Default Recommendations
+const housingCategories = ['Apartments', 'Villas', 'Castles'];
 
 
 /*
@@ -279,6 +280,7 @@ async function recommendationOffers() {
 
             const starsHTML = getStarsHTML(item.rating);
 
+            const rentPeriod = housingCategories.includes(item.category) ? 'night' : 'day';
             // Iterate and Render Item Cards
             const cardHTML = `
                 <a class="offer_card" href="offer_details.html?id=${item.offer_id}" target="_blank">
@@ -291,7 +293,7 @@ async function recommendationOffers() {
                     <div class="card_info">
                         <h3>${item.name}</h3>
                         <p>${item.city}</p>
-                        <span class="price">from ${convertedPrice} ${localStorage.getItem('currentSymbol')} / night</span>
+                        <span class="price">from ${convertedPrice} ${localStorage.getItem('currentSymbol')} / ${rentPeriod}</span>
                     </div>
                 </a>`;
             offers_grid.innerHTML += cardHTML;
@@ -505,10 +507,13 @@ async function showBenefits() {
         if(data.length === 0){
             return;
         }
+        const targetGroup = housingCategories.includes(currentCategory) ? 'realty' : 'transport';
 
         benefits.innerHTML ='<span class="benefits_span">Benefits:</span>';
         data.forEach(item =>{
             if(data.at(0) === item) return; // First in DB is 'chosen icon'
+
+            if (item.category !== targetGroup) return;
 
             const div = document.createElement('div');
             div.classList.add('benefit_item');
