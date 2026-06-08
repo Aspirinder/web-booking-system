@@ -1,10 +1,9 @@
 @import "components.css";
+/*
+   # LAYOUT STRUCTURE & TITLES (CREATE NEW OFFER)
+*/
 
-/* ==========================================================================
-   PAGE: CREATE NEW OFFER (v0.1.30 Standalone Refactored Engine)
-   ========================================================================== */
-
-/* Main layout container for the creation form */
+/* Main architectural layout container for the creation form */
 .create_offer_wrapper {
     max-width: 680px;
     margin: 40px auto;
@@ -12,7 +11,7 @@
     box-sizing: border-box;
 }
 
-/* Page main headline */
+/* Page main headline statement */
 .create_page_title {
     color: var(--bright-yellow);
     font-size: 32px;
@@ -22,17 +21,17 @@
     letter-spacing: 0.5px;
 }
 
-/* Info card modifications for standalone page layout spacing */
+/* Base content containment panel units */
 .create_offer_wrapper .info_card {
     background: var(--gray);
     border: 1px solid rgba(198, 156, 109, 0.2);
     border-radius: 16px;
-    padding: 24px ;
-    margin-bottom: 20px ;
+    padding: 24px;
+    margin-bottom: 20px;
     box-sizing: border-box;
 }
 
-/* Section header container inside cards */
+/* Section structural division headers inside cards */
 .create_offer_wrapper .card_card_header {
     margin-top: 0;
     margin-bottom: 18px;
@@ -40,41 +39,47 @@
     padding-bottom: 12px;
 }
 
-/* Form input fields standard styling (Inputs, Selects, Textareas) */
+/*
+   # FORM CONTROLS & INPUT FIELDS DESIGN
+*/
+
+/* Form input elements standard definitions configuration */
 .create_offer_wrapper input[type="text"],
 .create_offer_wrapper input[type="number"],
+.create_offer_wrapper input[type="email"],
 .create_offer_wrapper select,
 .create_offer_wrapper textarea {
-    background-color: var(--black) ;
-    border: 1px solid rgba(198, 156, 109, 0.3) ;
-    color: var(--white) ;
-    padding: 12px ;
-    border-radius: 12px ;
+    background-color: var(--black);
+    border: 1px solid rgba(198, 156, 109, 0.3);
+    color: var(--white);
+    padding: 12px;
+    border-radius: 12px;
     font-size: 14px;
     width: 100%;
     box-sizing: border-box;
     outline: none;
     font-family: inherit;
     margin-top: 4px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 10px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Input focus states with branded glow effect */
-.create_offer_wrapper input:focus,
+/* Focus interaction profiles rendering glowing neon canvas */
+.create_offer_wrapper input[type="text"]:focus,
+.create_offer_wrapper input[type="number"]:focus,
+.create_offer_wrapper input[type="email"]:focus,
 .create_offer_wrapper select:focus,
 .create_offer_wrapper textarea:focus {
-    border-color: var(--bright-yellow) ;
-    box-shadow: 0 0 8px rgba(244, 197, 144, 0.2) ;
+    border-color: var(--bright-yellow);
+    box-shadow: 0 0 8px rgba(244, 197, 144, 0.2);
 }
 
-/* Textarea height constraint override */
 .create_offer_wrapper textarea {
     resize: vertical;
     min-height: 100px;
 }
 
-/* Custom select dropdown styling with explicit SVG arrow injection */
+/* Custom select dropdown rendering standard customized vector arrow elements */
 .create_offer_wrapper select {
     cursor: pointer;
     appearance: none;
@@ -82,49 +87,52 @@
     background-image: url("data:image/svg+xml;utf8,<svg fill='%23C69C6D' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
-    padding-right: 40px ;
+    padding-right: 40px;
 }
 
-/* ==========================================================================
-   Housing Block Sub-Grid Layouts Update
-   ========================================================================== */
+/*
+   # SPECIFIC SUB-GRID CONFIGURATIONS (REALTY & HOUSING)
+*/
 
-/* Row 1: Flex layout grouping Street and House Number inline */
+/* Horizontal row grouping for inline elements (Street / House number pair) */
 .row_street_house {
     display: flex;
     gap: 20px;
     width: 100%;
 }
 
-/* Street takes up the majority of the row (75%) */
 .row_street_house .street_col {
     flex: 3;
 }
 
-/* House number shrinks dynamically down to 25% area weight */
 .row_street_house .house_col {
     flex: 1;
 }
 
-/* Row 2: Grid distribution handling Rooms, Floor, and Area inline */
+/* Secondary real estate metrics cluster layout layout blueprint */
 .row_housing_details {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    margin-top: 15px; /* Clean tracking break below row 1 */
+    margin-top: 15px;
     width: 100%;
 }
 
-/* ==========================================================================
-   Perks & Media Selectors Infrastructure
-   ========================================================================== */
+/*
+   # PERKS / AMENITIES INTERACTIVE ELEMENTS INTERFACE
+*/
+.benefits_grid_layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    width: 100%;
+    margin-top: 10px;
+}
 
-/* Customized layout container for the "Driver Included" checkbox option */
-.create_offer_wrapper .pay_option {
-    margin-top: 22px;
-    height: 43px;
-    box-sizing: border-box;
-    padding: 0 15px;
+/* Individual optional feature checkbox option custom item layout wrapper */
+.create_offer_wrapper .pay_option,
+.perk_check_item {
+    padding: 10px 14px;
     background: var(--black);
     border: 1px solid rgba(198, 156, 109, 0.3);
     display: flex;
@@ -132,15 +140,26 @@
     gap: 10px;
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.25s ease;
+    user-select: none;
+    transition: all 0.3s ease;
+    color: var(--typical-yellow);
 }
 
-.create_offer_wrapper .pay_option:hover {
+.create_offer_wrapper .pay_option {
+    margin-top: 22px;
+    height: 43px;
+    box-sizing: border-box;
+    padding: 0 15px;
+}
+
+.create_offer_wrapper .pay_option:hover,
+.perk_check_item:hover {
     border-color: var(--bright-yellow);
 }
 
-/* Custom stylized checkbox design wrapper */
-.create_offer_wrapper .pay_option input[type="checkbox"] {
+/* Stylized core state checkboxes mapping configurations */
+.create_offer_wrapper .pay_option input[type="checkbox"],
+.perk_check_item input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
     width: 18px;
@@ -156,37 +175,43 @@
     margin: 0;
 }
 
-.create_offer_wrapper .pay_option input[type="checkbox"]:hover {
+.create_offer_wrapper .pay_option input[type="checkbox"]:hover,
+.perk_check_item input[type="checkbox"]:hover {
     border-color: var(--bright-yellow);
 }
 
-.create_offer_wrapper .pay_option input[type="checkbox"]:checked {
+.create_offer_wrapper .pay_option input[type="checkbox"]:checked,
+.perk_check_item input[type="checkbox"]:checked {
     border-color: var(--typical-yellow);
     background: var(--typical-yellow);
 }
 
-/* Custom checkmark symbol injection upon checkbox toggle state */
-.create_offer_wrapper .pay_option input[type="checkbox"]:checked::before {
+.create_offer_wrapper .pay_option input[type="checkbox"]:checked::before,
+.perk_check_item input[type="checkbox"]:checked::before {
     content: "✓";
     color: var(--black);
     font-size: 12px;
     font-weight: bold;
 }
 
-.create_offer_wrapper .pay_option:has(input[type="checkbox"]:checked) {
+/* Highlighting targets wrapper boxes once state elements resolve true */
+.create_offer_wrapper .pay_option:has(input[type="checkbox"]:checked),
+.perk_check_item:has(input[type="checkbox"]:checked) {
     background: rgba(198, 156, 109, 0.08);
     border-color: var(--typical-yellow);
 }
 
-/* System native file uploader input node override */
+/*
+   # BINARY UPLOADS & MEDIA ASSETS STORAGE LAYER NODES
+*/
 .create_offer_wrapper input[type="file"] {
-    background: transparent ;
-    border: none ;
-    padding: 5px 0 ;
+    background: transparent;
+    border: none;
+    padding: 5px 0;
     cursor: pointer;
 }
 
-/* Styling the clickable native action button inside file input fields */
+/* Custom styling target bindings hooks into browser pseudo structure elements */
 .create_offer_wrapper input[type="file"]::-webkit-file-upload-button {
     background: var(--light-gray);
     border: 1px solid rgba(198, 156, 109, 0.3);
@@ -204,7 +229,23 @@
     color: var(--black);
 }
 
-/* Large full-width form submission action button */
+/*
+   # CONTACT INFORMATION LAYOUT COMPONENT
+*/
+.contact_wrapper {
+    background-color: var(--gray);
+    border-radius: 16px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+    border: 1px solid rgba(198, 156, 109, 0.15);
+}
+
+/*
+   # COMPONENT EXTRA BUTTON ACTIONS & MISC VIEW UTILITIES
+*/
 .create_offer_wrapper .btn_publish_large {
     width: 100%;
     padding: 16px;
@@ -224,73 +265,12 @@
     transform: scale(1.02);
 }
 
-.benefits_grid_layout {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-    width: 100%;
-    margin-top: 10px;
-}
-
-/* Individual check option styling mimicking your existing .pay_option */
-.perk_check_item {
-    padding: 10px 14px;
-    background: var(--black);
-    border: 1px solid rgba(198, 156, 109, 0.3);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-radius: 12px;
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.3s ease;
-    color: var(--typical-yellow);
-}
-
-.perk_check_item:hover {
-    border-color: var(--bright-yellow);
-}
-
-/* Style for standard checkboxes inside the grid */
-.perk_check_item input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--light-gray);
-    border-radius: 4px;
-    outline: none;
-    background: transparent;
-    cursor: pointer;
-    display: grid;
-    place-content: center;
-    transition: all 0.2s ease;
-    margin: 0;
-}
-
-.perk_check_item input[type="checkbox"]:checked {
-    border-color: var(--typical-yellow);
-    background: var(--typical-yellow);
-}
-
-.perk_check_item input[type="checkbox"]:checked::before {
-    content: "✓";
-    color: var(--black);
-    font-size: 12px;
-}
-
-/* Active box highlight state */
-.perk_check_item:has(input[type="checkbox"]:checked) {
-    background: rgba(198, 156, 109, 0.08);
-    border-color: var(--typical-yellow);
-}
-
 .loading_placeholder {
     color: var(--light-gray);
     font-size: 14px;
 }
 
-.info_meta_group span{
+.info_meta_group span {
     text-transform: none;
     font-size: 13px;
 }

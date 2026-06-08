@@ -1,5 +1,8 @@
 @import "components.css";
 
+/*
+   # PROFILE MASTER CONTAINMENT LAYER
+*/
 .profile_container {
     max-width: 1200px;
     margin: 40px auto 80px auto;
@@ -10,6 +13,9 @@
     box-sizing: border-box;
 }
 
+/*
+   # SIDEBAR CONTROL PANEL (LEFT COLUMN)
+*/
 .left_slider {
     background: #141414;
     border: 1px solid rgba(198, 156, 109, 0.12);
@@ -19,6 +25,7 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
+/* Cryptographic Avatar Profile Graphics */
 .avatar_wrapper {
     position: relative;
     width: 140px;
@@ -37,6 +44,7 @@
     cursor: pointer;
 }
 
+/* Inline Input Modification Enclosure Fields */
 .input_box {
     margin-bottom: 25px;
     text-align: left;
@@ -80,6 +88,7 @@
     cursor: not-allowed;
 }
 
+/* Action Controls Form State Triggers */
 .input_box button {
     padding: 8px 16px;
     font-size: 13px;
@@ -102,10 +111,14 @@
     color: #000000;
 }
 
+.btn_save, 
+.btn_cancel {
+    display: none;
+}
+
 .btn_save {
     background: #c69c6d;
     color: #000000;
-    display: none;
 }
 
 .btn_save:hover {
@@ -116,7 +129,6 @@
     background: #2a2a2a;
     color: #ffffff;
     border: 1px solid #3a3a3a !important;
-    display: none;
 }
 
 .btn_cancel:hover {
@@ -124,6 +136,9 @@
     border-color: #4a4a4a !important;
 }
 
+/*
+   # DATA REGISTRY CARD DISPLAY DASHBOARD (RIGHT COLUMN)
+*/
 .main_content_card {
     background: #141414;
     border: 1px solid rgba(198, 156, 109, 0.12);
@@ -132,10 +147,11 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.profile_wrapper{
+/* Tab Navigation Header Controls Area */
+.profile_wrapper {
     display: flex;
     flex-direction: row;
-    align-content: space-between;
+    justify-content: space-between;
     border-bottom: 1px solid #262626;
     padding-bottom: 20px;
     margin-bottom: 30px;
@@ -172,11 +188,12 @@
     box-shadow: 0 0 15px rgba(198, 156, 109, 0.05);
 }
 
-#btn_create_offer{
+#btn_create_offer {
     margin-left: auto;
     display: none;
 }
 
+/* Multi-View Relational Panel Switches Engine */
 .tab_panel {
     display: none;
 }
@@ -184,11 +201,9 @@
 .tab_panel.active {
     display: grid;
     gap: 20px;
-    
     max-height: 500px;
     overflow-y: auto;
     overflow-x: hidden;
-    
     padding: 10px;
 }
 
@@ -201,11 +216,15 @@
 }
 
 .tab_panel.active::-webkit-scrollbar-thumb {
-    background-color: var(--bright-yellow);
+    background-color: #f4c590;
     border-radius: 10px;
 }
 
-.list_booking_card, .list_my_offer_card {
+/*
+   # SYSTEM FEED PIPELINES ITEM CARDS (BOOKINGS / OFFERS)
+*/
+.list_booking_card, 
+.list_my_offer_card {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -219,7 +238,8 @@
     cursor: pointer;
 }
 
-.list_booking_card:hover, .list_my_offer_card:hover {
+.list_booking_card:hover, 
+.list_my_offer_card:hover {
     transform: translateX(4px);
     border-color: rgba(198, 156, 109, 0.3);
 }
@@ -236,7 +256,7 @@
     color: #8c8c8c;
 }
 
-.category_img{
+.category_img {
     height: 24px;
     width: 24px;
 }
@@ -252,6 +272,7 @@
     margin-top: 8px;
 }
 
+/* Categorical Verification Status Badges */
 .badge {
     display: inline-block;
     padding: 5px 12px;
@@ -280,6 +301,7 @@
     border: 1px solid rgba(244, 67, 54, 0.2);
 }
 
+/* Fallback Missing Content States */
 .no_data_placeholder {
     text-align: center;
     padding: 50px 0;

@@ -674,8 +674,8 @@ class ModalManager{
             document.getElementById('md_offer_name').textContent = booking.offer_name;
             document.getElementById('md_booking_dates').textContent = `${booking.check_in} — ${booking.check_out}`;
             document.getElementById('md_host_name').textContent = booking.host_name;
-            document.getElementById('md_host_email').textContent = booking.owner_email || 'Not provided';
-            document.getElementById('md_host_phone').textContent = booking.owner_phone_number || 'Not provided';
+            document.getElementById('md_host_email').textContent = booking.contact_email || 'Not provided';
+            document.getElementById('md_host_phone').textContent = booking.contact_phone || 'Not provided';
             document.getElementById('md_total_price').textContent = `${booking.total_price} ${currencySymbol}`;
             document.getElementById('md_payment_method').textContent = booking.payment_method.toUpperCase();
 
@@ -722,7 +722,7 @@ async function checkUserSession() {
         // Change Interface if Session is
         if(data.isLoggedIn) {
             updateHeaderForUser(data.userId);
-            return true;
+            return data;
         }else return false;
 
     }catch(error) {console.error("Auth check failed: ", error);}

@@ -1,47 +1,17 @@
 @import "components.css";
 
-.container{
+/*
+   # MAIN PAGE LAYOUT ARCHITECTURE
+*/
+.container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-
     color: #C69C6D;
 }
 
-.offer_header a{
-    display: inline-block;
-    color: var(--typical-yellow);
-    text-decoration: underline;
-    transition: all 0.3s ease;
-}
-
-.offer_header a:hover{
-    transform: scale(1.1);
-    color: var(--bright-yellow);
-}
-
-.title_rating_wrapper{
-    display: flex;
-    align-items: center;
-    gap: 0 15px;
-    flex-wrap: wrap;
-}
-
-.offer_rating{
-    font-size: 30px;
-    color: var(--bright-yellow);
-}
-
-.rating_icon{
-    width: 30px;
-    height: 30px;
-}
-
-.offer_location{
-    margin-top: 3px;
-}
-
-.offer_layout{
+/* Two-column structural grid specification */
+.offer_layout {
     display: grid;
     grid-template-columns: 1fr 400px;
     gap: 40px;
@@ -49,117 +19,70 @@
     align-items: start;
 }
 
-.right_column{
+.main_content {
+    margin-top: 25px;
+}
+
+.right_column {
     position: relative;
     height: 100%;
 }
 
-.main_content{
-    margin-top: 25px;
+/*
+   # HEADER SECTION & METADATA BADGES
+*/
+.offer_header a {
+    display: inline-block;
+    color: var(--typical-yellow);
+    text-decoration: underline;
+    transition: all 0.3s ease;
 }
 
-.price_big{
+.offer_header a:hover {
+    transform: scale(1.1);
+    color: var(--bright-yellow);
+}
+
+.title_rating_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0 15px;
+    flex-wrap: wrap;
+}
+
+.offer_rating {
+    font-size: 30px;
+    color: var(--bright-yellow);
+}
+
+.rating_icon {
+    width: 30px;
+    height: 30px;
+}
+
+.offer_location {
+    margin-top: 3px;
+}
+
+.price_big {
     font-size: 2.5rem;
     color: #f4c590;
     margin: 20px 0;
 }
 
-.booking_form{
-    position: sticky;
-    top: 40px;
-    z-index: 10;
-}
-
-.booking_card{
-    background-color: var(--gray);
-    border: 1px solid rgba(198, 156, 109, 0.3);
-    border-radius: 12px;
-    padding: 30px;
-    top: 20px;
-}
-
-.booking_dates_form{
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.date_input_group{
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    align-items: center;
-}
-
-.date_input_group img{
-    width: 24px;
-    height: 24px;
-}
-
-.date_input_group label{
-    color: var(--typical-yellow);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-input{
-    background-color: var(--black);
-    border: 1px solid rgba(198, 156, 109, 0.4);
-    border-radius: 8px;
-    padding: 12px;
-    color: var(--white);
-    font-size: 1rem;
-    outline: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-input:focus{
-    border-color: var(--bright-yellow);
-}
-
-.btn_book_now{
-    margin-top: 20px;
-    width: 100%;
-    background-color: var(--typical-yellow);
-    color: var(--black);
-    border: none;
-    padding: 15px;
-    border-radius: 12px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-}
-
-.benefits_list{
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    gap: 10px;
-    
-}
-
-.benefit_pill{
-    background-color: #262626;
-    padding: 10px 15px;
-    border-radius: 5px;
-    border: solid 1px rgba(198, 156, 109, 0.3);
-}
-
-.slider_container{
+/*
+   # DYNAMIC MEDIA GALLERY SLIDER
+*/
+.slider_container {
     position: relative;
     width: 100%;
+    max-width: 800px;
     border-radius: 15px;
     overflow: hidden;
     background-color: var(--gray);
-    width: 800px;
 }
 
-.main_image_wrapper{
+.main_image_wrapper {
     position: relative;
     height: 500px;
     display: flex;
@@ -167,14 +90,15 @@ input:focus{
     justify-content: center;
 }
 
-#slider_img{
+#slider_img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: all 0.4s ease-in-out;
 }
 
-.slider_btn{
+/* Carousel Navigation Buttons */
+.slider_btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -195,21 +119,22 @@ input:focus{
     z-index: 10;
 }
 
-.main_image_wrapper:hover .slider_btn{
+.main_image_wrapper:hover .slider_btn {
     opacity: 1;
-    visibility:visible;
+    visibility: visible;
 }
 
-.slider_btn:hover{
+.slider_btn:hover {
     background: var(--typical-yellow);
     color: var(--black);
     transform: translateY(-50%) scale(1.1);
 }
 
-.slider_btn.prev {left: 20px;}
-.slider_btn.next {right: 20px;}
+.slider_btn.prev { left: 20px; }
+.slider_btn.next { right: 20px; }
 
-.photo_counter{
+/* Counter index asset over top slider */
+.photo_counter {
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -219,4 +144,100 @@ input:focus{
     border-radius: 20px;
     font-size: 14px;
     letter-spacing: 1px;
+}
+
+/*
+   # AMENITIES & FEATURES PILL BADGES
+*/
+.benefits_list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.benefit_pill {
+    background-color: #262626;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: solid 1px rgba(198, 156, 109, 0.3);
+}
+
+/*
+   # STICKY BOOKING SIDEBAR CARD FORM
+*/
+.booking_form {
+    position: sticky;
+    top: 40px;
+    z-index: 10;
+}
+
+.booking_card {
+    background-color: var(--gray);
+    border: 1px solid rgba(198, 156, 109, 0.3);
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.booking_dates_form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.date_input_group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.date_input_group img {
+    width: 24px;
+    height: 24px;
+}
+
+.date_input_group label {
+    color: var(--typical-yellow);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Form Fields Interactive Controls Override */
+.booking_card input {
+    background-color: var(--black);
+    border: 1px solid rgba(198, 156, 109, 0.4);
+    border-radius: 8px;
+    padding: 12px;
+    color: var(--white);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.booking_card input:focus {
+    border-color: var(--bright-yellow);
+}
+
+/* Call To Action Primary Submission Button */
+.btn_book_now {
+    margin-top: 20px;
+    width: 100%;
+    background-color: var(--typical-yellow);
+    color: var(--black);
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn_book_now:hover {
+    background-color: var(--bright-yellow);
+    color: var(--black);
 }

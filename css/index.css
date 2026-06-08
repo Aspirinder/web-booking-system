@@ -1,27 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 @import "components.css";
 
-/*hero section*/
-
-.hero_section{
+/*
+   # HERO HERO SECTION & CORE MOTTO DISPLAY
+*/
+.hero_section {
     background-color: var(--gray);
     color: var(--bright-yellow);
     padding: 25px 15px 80px 15px;
     text-align: center;
 }
 
-.hero_content h1{
+.hero_content h1 {
     color: var(--typical-yellow);
     font-size: 54px;
     font-weight: 300;
     text-transform: uppercase;
     letter-spacing: 3px;
-    
-    margin-bottom: 15px;
-    margin: 0;
+    margin: 0 0 15px 0;
 }
 
-.hero_content p{
+.hero_content p {
     color: rgba(224, 228, 204, 0.8);
     font-size: 20px;
     font-weight: 300;
@@ -30,18 +29,22 @@
     max-width: 800px;
 }
 
-.search_bar{
+/*
+   # CENTRAL MULTI-FIELD SEARCH BAR ENGINE
+*/
+.search_bar {
     background-color: var(--light-gray);
     border-radius: 8px;
     display: flex;
-    margin: 0 auto 0 auto;
+    margin: 0 auto;
     max-width: 1100px;
     height: 60px;
     border: 1px solid var(--typical-yellow);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.search_item{
+/* Individual data gathering slot column inside the main track */
+.search_item {
     background-color: transparent;
     border-right: 1px solid rgba(198, 156, 109, 0.3);
     flex: 1;
@@ -53,11 +56,11 @@
     font-size: 16px;
 }
 
-.search_item:last-of-type{
+.search_item:last-child {
     border-right: none;
 }
 
-.search_item input{
+.search_item input {
     background: transparent;
     border: none;
     outline: none;
@@ -67,28 +70,28 @@
     cursor: pointer;
 }
 
-.search_img{
+.search_img {
     width: 20px;
     height: 20px;
     opacity: 0.8;
     cursor: pointer;
 }
 
-.input_locations_container{
+/* Dynamic Input Error Handlers */
+.input_locations_container {
     position: relative;
     width: 100%;
 }
 
-.input_locations_container.error{
+.input_locations_container.error {
     border: 1px solid #ff4d4d;
     box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
     border-radius: 8px;
     animation: shake 0.2s ease-in-out 0s 2;
 }
 
-
-
-.autocomplete_suggestions{
+/* Typeahead Search Predictions Dropdowns */
+.autocomplete_suggestions {
     position: absolute;
     top: 100%;
     margin-top: 5px;
@@ -105,21 +108,21 @@
     animation: fadeIn 0.2s ease;
 }
 
-.autocomplete_suggestions::-webkit-scrollbar{
+.autocomplete_suggestions::-webkit-scrollbar {
     width: 8px;
 }
 
-.autocomplete_suggestions::-webkit-scrollbar-track{
+.autocomplete_suggestions::-webkit-scrollbar-track {
     background-color: transparent;
 }
 
-.autocomplete_suggestions::-webkit-scrollbar-thumb{
+.autocomplete_suggestions::-webkit-scrollbar-thumb {
     background-color: var(--typical-yellow);
     border: 2px solid var(--light-gray);
     border-radius: 8px;
 }
 
-.suggestion_item{
+.suggestion_item {
     padding: 10px 15px;
     cursor: pointer;
     color: var(--white);
@@ -127,17 +130,24 @@
     border-radius: 8px;
 }
 
-.suggestion_item:hover{
+.suggestion_item:hover {
     background-color: var(--light-gray);
     color: var(--bright-yellow);
 }
 
-#guests_container{
+/*
+   # SEARCH SUB-COMPONENTS: GUESTS / ROOMS COUNTER PANEL
+*/
+#guests_container {
     position: relative;
     cursor: pointer;
 }
 
-.guests_dropdown{
+#guests_display {
+    min-width: 200px;
+}
+
+.guests_dropdown {
     display: none;
     position: absolute;
     cursor: auto;
@@ -152,20 +162,16 @@
     border-radius: 8px;
 }
 
-.guests_dropdown.show{
+.guests_dropdown.show {
     display: block;
     animation: fadeIn 0.2s ease;
 }
 
-.guests_dropdown input{
+.guests_dropdown input {
     width: 28px;
 }
 
-#guests_display{
-    min-width: 200px;
-}
-
-.dropdown_item{
+.dropdown_item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -173,7 +179,7 @@
     color: var(--white);
 }
 
-.counter{
+.counter {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -181,14 +187,16 @@
     min-width: 100px;
 }
 
-#counter_adults, #counter_children, #counter_rooms {
+#counter_adults, 
+#counter_children, 
+#counter_rooms {
     min-width: 20px;
     text-align: center;
     font-weight: 600;
     color: var(--white);
 }
 
-.btn_counter{
+.btn_counter {
     width: 30px;
     height: 30px;
     border: 1px solid var(--typical-yellow);
@@ -201,49 +209,51 @@
     justify-content: center;
 }
 
-.btn_search, .btn_book{
+/* Main Submission Action trigger for Search Panel */
+.btn_search, 
+.btn_book {
     background-color: var(--typical-yellow);
     color: var(--black);
     border: none;
-    border-radius: 0px 8px 8px 0px;
+    border-radius: 0 8px 8px 0;
     height: 101%;
-    margin: -1px -1px -1px -1px;
+    margin: -1px;
     padding: 0 40px;
     font-size: 16px;
     text-transform: uppercase;
     font-weight: bold;
 }
 
-
-.btn_search:hover{
+.btn_search:hover {
     background-color: var(--bright-yellow);
     letter-spacing: 4px;
     transform: scale(1);
     color: var(--black);
 }
 
-/*content area*/
-
-.content_area{
+/*
+   # DYNAMIC CONTENT ARCHITECTURE GRID AREA
+*/
+.content_area {
     background-color: var(--black);
     padding: 46px 10%;
 }
 
-.section_header_container{
+.section_header_container {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     margin: 40px 0;
 }
 
-.section_header{
+.section_header {
     text-align: left;
     margin-bottom: 40px;
     border-left: 3px solid var(--typical-yellow);
     padding-left: 20px;
 }
 
-.section_header h2{
+.section_header h2 {
     color: var(--typical-yellow);
     font-size: 28px;
     text-transform: uppercase;
@@ -251,13 +261,17 @@
     margin: 0;
 }
 
-.section_header p, .benefits_span{
+.section_header p, 
+.benefits_span {
     color: rgba(224, 228, 204, 0.8);
     font-size: 18px;
     margin-top: 5px;
 }
 
-.sort_selector{
+/*
+   # CATALOG INTERFACE CONTROLS: SORT SELECTOR DROP-DOWN
+*/
+.sort_selector {
     display: flex;
     position: relative;
     margin-left: auto;
@@ -267,24 +281,24 @@
     gap: 20px;
 }
 
-.btn_sort{
+.btn_sort {
     display: none;
     align-items: center;
     gap: 5px;
     background: transparent;
     border: 1px solid rgba(198, 156, 109, 0.7);
-    padding: 10px 10px;
+    padding: 10px;
     border-radius: 8px;
     font-size: 14px;
     color: var(--typical-yellow);
     height: 32px;
 }
 
-.btn_sort.show{
+.btn_sort.show {
     display: flex;
 }
 
-.btn_sort:hover{
+.btn_sort:hover {
     transform: scale(1);
 }
 
@@ -321,14 +335,17 @@
     color: var(--bright-yellow);
 }
 
-.search_result_wrapper{
+/*
+   # FILTERS PANEL LAYOUT SYSTEM (SIDEBAR AMENITIES PERKS)
+*/
+.search_result_wrapper {
     display: flex;
     align-items: flex-start;
     gap: 30px;
     margin-top: 20px;
 }
 
-.benefits{
+.benefits {
     display: none;
     flex: 0 0 225px;
     flex-direction: column;
@@ -337,18 +354,15 @@
     top: 20px;
 }
 
-.benefits.show{
+.benefits.show {
     display: flex;
 }
 
-.benefits_span{
+.benefits_span {
     padding: 0 15px;
-    color: rgba(224, 228, 204, 0.8);
-    font-size: 18px;
-    margin-top: 5px;
 }
 
-.benefit_item{
+.benefit_item {
     width: 100%;
     display: flex;
     align-items: center;
@@ -365,12 +379,12 @@
     color: var(--typical-yellow);
 }
 
-.benefit_item.chosen{
+.benefit_item.chosen {
     border: 1px solid rgba(198, 156, 109, 0.7);
     color: var(--bright-yellow);
 }
 
-.img_chosen{
+.img_chosen {
     display: none;
     width: 20px;
     margin-left: auto;
@@ -381,29 +395,33 @@
     animation: fadeIn 0.5s ease forwards;
 }
 
-.img_chosen.show{
+.img_chosen.show {
     display: flex;
 }
 
-.benefit_item:hover, .mini_benefit:hover{
+.benefit_item:hover, 
+.mini_benefit:hover {
     border-color: var(--bright-yellow);
     transform: translateY(-2px);
     background-color: var(--light-gray);
 }
 
-.benefit_img{
+.benefit_img {
     width: 20px;
     height: 20px;
     object-fit: contain;
 }
 
-.benefit_text{
+.benefit_text {
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 0.5px;
 }
 
-.offers_grid{
+/*
+   # OFFERS REGULAR & FILTERED DATA CARDS STREAM TILES
+*/
+.offers_grid {
     display: flex;
     gap: 30px;
     overflow-x: auto;
@@ -412,8 +430,12 @@
     white-space: nowrap;
 }
 
-.offers_grid.search{
-    display: flex;
+.offers_grid::-webkit-scrollbar {
+    display: none;
+}
+
+/* Specific view override when search queries trigger list blocks stacks */
+.offers_grid.search {
     flex-direction: column;
     width: 100%;
     background-color: transparent;
@@ -421,14 +443,15 @@
     gap: 20px;
 }
 
-.offers_grid.search img{
+.offers_grid.search img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     cursor: pointer;
 }
 
-.default_content_offer_grid{
+/* Fallback Empty Data Result State Placeholders */
+.default_content_offer_grid {
     display: flex;
     width: 100%;
     min-width: 100%;
@@ -438,23 +461,20 @@
     gap: 20px;
 }
 
-.default_content_offer_grid img{
+.default_content_offer_grid img {
     width: 96px;
     opacity: 0.5;
 }
 
-.default_content_offer_grid span{
+.default_content_offer_grid span {
     color: rgba(198, 156, 109, 0.6);
     font-size: 18px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.offers_grid::-webkit-scrollbar{
-    display: none;
-}
-
-.offer_card{
+/* Standard Catalog Product Cards Layout Structure */
+.offer_card {
     flex: 0 0 350px;
     flex-shrink: 0;
     background-color: var(--gray);
@@ -465,41 +485,41 @@
     min-width: 0;
 }
 
-.offer_card:hover{
+.offer_card:hover {
     transform: translateY(-10px);
     border-color: var(--typical-yellow);
 }
 
-.offer_card_img{
+.offer_card_img {
     position: relative;
     overflow: hidden;
     height: 350px;
     border-radius: 8px;
 }
 
-.offer_card_img img{
+.offer_card_img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: all 0.6s ease;
 }
 
-.offer_card_img:hover img{
+.offer_card_img:hover img {
     transform: scale(1.1);
 }
 
-.offer_card.search{
+/* Product list card presentation structural override */
+.offer_card.search {
     display: flex;
     flex-direction: row;
     gap: 20px;
     overflow-x: hidden;
-    background-color: var(--gray);
     border: 1px solid rgba(198, 156, 109, 0.2);
-    border-radius: 8px;
     cursor: auto;
 }
 
-.rating_stars{
+/* Badges & Card Metadata Information Panels */
+.rating_stars {
     position: absolute;
     top: 15px;
     left: 15px;
@@ -514,55 +534,53 @@
     z-index: 2;
 }
 
-.material-symbols-outlined{
+.material-symbols-outlined {
     font-size: 18px;
     color: rgba(198, 156, 109, 0.4);
 }
 
-.material-symbols-outlined.fill{
+.material-symbols-outlined.fill {
     color: var(--bright-yellow);
     font-variation-settings: 'FILL' 1;
     display: inline-block;
 }
 
-.card_info{
+.card_info {
     padding: 15px;
 }
 
-.card_info h3{
+.card_info h3 {
     color: var(--bright-yellow);
     margin: 0 0 5px 0;
     font-size: 20px;
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
     display: block;
     width: 100%;
 }
 
-.card_info p{
+.card_info p {
     color: rgba(224, 228, 204, 0.8);
     font-size: 22px;
     margin-bottom: 15px;
 }
 
-.card_content{
+.card_content {
     display: flex;
     justify-content: space-between;
     flex: 1;
     padding: 20px;
 }
 
-.card_info.search{
+.card_info.search {
     display: flex;
     flex-direction: column;
     gap: 8px;
     text-align: left;
 }
 
-.card_description{
+.card_description {
     color: var(--black);
     font-size: 0.9rem;
     margin: 5px 0;
@@ -585,6 +603,7 @@
     animation: fadeIn 0.5s ease forwards;
 }
 
+/* Inline CTA Purchase Conversion Triggers */
 .card_action_area {
     display: flex;
     flex-direction: column;
@@ -623,13 +642,13 @@
     text-decoration: none;
 }
 
-.btn_view_more:hover{
+.btn_view_more:hover {
     color: var(--black);
     transform: scale(1.1);
     background-color: var(--bright-yellow);
 }
 
-.price{
+.price {
     display: block;
     color: var(--typical-yellow);
     font-weight: bold;
@@ -638,12 +657,15 @@
     padding-top: 15px;
 }
 
-.slider_controls{
+/*
+   # DYNAMIC CAROUSEL SLIDERS & PAGINATION BUTTON CONTROLS
+*/
+.slider_controls {
     display: flex;
     gap: 5px;
 }
 
-.btn_control{
+.btn_control {
     background-color: transparent;
     border: 0;
     width: 32px;
@@ -653,17 +675,18 @@
     justify-content: center;
 }
 
-.btn_control_img{
+.btn_control_img {
     width: 32px;
     height: 32px;
 }
 
-.btn_control:disabled{
+.btn_control:disabled {
     opacity: 0.3;
     cursor: not-allowed;
 }
 
-.load_more_offers{
+/* Infinite Lazy-Load Catalog Feeds Trigger */
+.load_more_offers {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -671,7 +694,7 @@
     padding-bottom: 50px;
 }
 
-#btn_show_more_offers{
+#btn_show_more_offers {
     background-color: transparent;
     border: 1px solid var(--typical-yellow);
     color: var(--typical-yellow);

@@ -9,7 +9,8 @@ if (isset($_SESSION['user_id'])) {
     // Return validation metadata if user is securely logged in
     echo json_encode([
         "isLoggedIn" => true,
-        "userId" => $_SESSION['user_id']
+        "userId" => $_SESSION['user_id'],
+        "email" => $_SESSION['email']
     ]);
 } else {
     // Return fallback layout state for unauthorized guest sessions

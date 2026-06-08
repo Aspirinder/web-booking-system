@@ -29,7 +29,7 @@ $bookingId = intval($_GET['id']);
 
 try {
     // Step 1: Query database using relational JOINS to extract unified details
-    $sql = "SELECT b.*, o.name AS offer_name, u.fullname AS host_name FROM bookings b
+    $sql = "SELECT b.*, o.name AS offer_name, o.contact_email, o.contact_phone, u.fullname AS host_name FROM bookings b
         JOIN offers o ON b.offer_id = o.offer_id
         JOIN users u ON o.user_id = u.user_id
         WHERE b.booking_id = ?";

@@ -28,6 +28,7 @@ try {
 
             // Bind session identity state anchor variables keys
             $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['email'] = $user['email'];
         
             echo json_encode([
                 "status"=> "success",

@@ -1,5 +1,7 @@
-/*Global*/
-:root{
+/* 
+   # DESIGN SYSTEM & CORE VARIABLES
+*/
+:root {
     --typical-yellow: #C69C6D;
     --bright-yellow: #f4c590;
     --black: #1a1a1a;
@@ -7,7 +9,9 @@
     --light-gray: #333333;
     --white: #E0E4CC;
 }
-body{
+
+/* Base Reset & Typography */
+body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -15,67 +19,77 @@ body{
     overflow-x: hidden;
 }
 
-button{
+a {
+    text-decoration: none;
+}
+
+/* Interactive Elements Default States */
+button {
     transition: all 0.3s ease, box-shadow 0.3s ease;
     letter-spacing: 1px;
     cursor: pointer;
 }
 
-button:hover{
+button:hover {
     transform: scale(1.1);
     color: var(--bright-yellow);
 }
 
-input{
+input {
     border-radius: 12px;
 }
 
+/* Hide native WebKit outer/inner spin arrows for number inputs */
+input::-webkit-outer-spin-button, 
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide native WebKit date picker calendar icon wrapper */
 input[type="date"]::-webkit-calendar-picker-indicator {
     background: transparent;
     display: none;
     -webkit-appearance: none;
 }
 
-input[type="date"]:focus{
+input[type="date"]:focus {
     background: none;
 }
 
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-a{
-    text-decoration: none;
-}
-
-.line{
+/* Structural UI Layout Separators */
+.line {
     width: 100%;
     height: 5px;
     background-color: #262626;
 }
 
-
-/*header and menubar*/
-
-.header_root, .menubar{
+/* 
+   # GLOBAL NAVIGATION (HEADER & MENUBAR)
+    */
+.header_root, 
+.menubar {
     background-color: var(--black);
     color: var(--typical-yellow);
-
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px 10%;
 }
 
-.header_bar{
+.menubar {
+    height: 80px;
+}
+
+.header_bar {
     display: flex;
     gap: 15px;
     align-items: center;
     height: 40px;
 }
 
-.logo{
+/* Brand Identity Logo Elements */
+.logo {
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -83,13 +97,13 @@ a{
     cursor: url('https://play.vsthemes.org/t-cursors/74133/1fb3365070e97249ce185e842057d8f4.webp'), auto;
 }
 
-.main_title{
+.main_title {
     font-size: 32px;
     font-weight: bold;
     color: var(--typical-yellow);
 }
 
-.author{
+.author {
     font-size: 14px;
     color: rgba(198, 156, 109, 0.7);
     text-align: right;
@@ -97,24 +111,24 @@ a{
     letter-spacing: 2px;
 }
 
-.btn_lang, .btn_money{
+/* Language & Currency Control Nodes */
+.btn_lang, 
+.btn_money {
     background-color: transparent;
     border: none;
     border-radius: 50%;
     padding: 0;
-
     width: 50px;
     height: 50px;
-
     font-size: 15px;
     color: var(--typical-yellow);
 }
 
-.currency_selector{
+.currency_selector {
     position: relative;
 }
 
-.currency_list{
+.currency_list {
     display: none;
     position: absolute;
     top: 50px;
@@ -127,12 +141,12 @@ a{
     border-radius: 8px;
 }
 
-.currency_list.show{
+.currency_list.show {
     display: block;
     animation: fadeIn 0.2s ease;
 }
 
-.currency_option{
+.currency_option {
     padding: 12px 15px;
     color: var(--typical-yellow);
     cursor: pointer;
@@ -142,38 +156,33 @@ a{
     border-radius: 8px;
 }
 
-.currency_option:hover{
+.currency_option:hover {
     background-color: var(--light-gray);
     color: var(--bright-yellow);
 }
 
-.btn_menu{
+/* Category Sub-Menu Controls Navigation Bar */
+.btn_menu {
     background-color: var(--black);
     border: 0;
     color: var(--typical-yellow);
     font-size: 16px;
-
     padding: 0 20px;
     margin: 0;
     height: 40px;
-
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 3px;
 }
 
-.btn_menu.active{
+.btn_menu.active {
     border-bottom: 2px solid var(--typical-yellow);
     color: var(--bright-yellow);
 }
 
-.btn_img_login{
+.btn_img_login {
     border-radius: 0;
-}
-
-.menubar{
-    height: 80px;
 }
 
 .btn_img_menu {
@@ -182,35 +191,36 @@ a{
     object-fit: cover;
 }
 
-/*footer*/
-
-.footer_root{
+/* 
+   # FOOTER LAYOUT
+*/
+.footer_root {
     background-color: #111111;
     color: var(--white);
     padding: 80px 10% 10px 10%;
     border-top: 1px solid rgba(198, 156, 109, 0.1);
 }
 
-.footer_container{
+.footer_container {
     display: flex;
     justify-content: space-between;
     margin-bottom: 60px;
     gap: 50px;
 }
 
-.footer_info{
+.footer_info {
     flex: 2;
     max-width: 400px;
 }
 
-.footer_mission{
+.footer_mission {
     margin-top: 20px;
     font-size: 14px;
     line-height: 1.8;
     color: rgba(224, 228, 204, 0.6);
 }
 
-.footer_links{
+.footer_links {
     flex: 3;
     display: flex;
     justify-content: space-around;
@@ -223,67 +233,67 @@ a{
     margin-bottom: 12px;
 }
 
-.link_group a{
+.link_group a {
     display: block;
     color: rgba(224, 228, 204, 0.8);
-    text-decoration: none;
     font-size: 14px;
     margin-bottom: 12px;
     transition: all 0.3s;
 }
 
-.link_group a:hover{
+.link_group a:hover {
     color: var(--typical-yellow);
     transform: translateX(5px);
 }
 
-.footer_bottom{
+.footer_bottom {
     border-top: 1px solid rgba(198, 156, 109, 0.1);
     display: flex;
     justify-content: space-between;
-    align-items: center start;
+    align-items: center;
     gap: 0 5px;
-    height:50px;
+    height: 50px;
 }
 
-.footer_bottom p{
+.footer_bottom p {
     font-size: 12px;
     color: rgba(224, 228, 204, 0.4);
-    align-content: center;
 }
 
-.social_icons{
+.social_icons {
     display: flex;
     gap: 20px;
     align-items: center;
 }
 
-.social_icons img{
+.social_icons img {
     width: 20px;
     height: 20px;
     opacity: 0.6;
     transition: all 0.3s;
 }
 
-.social_icons img:hover{
+.social_icons img:hover {
     opacity: 1;
     transform: translateY(-3px);
 }
 
-/*Sign Up*/
-
-.modal{
+/* 
+   # MODAL SYSTEM BASE PIPELINES (SIGN IN / SIGN UP OVERLAYS)
+*/
+.modal {
     display: none;
     position: fixed;
     z-index: 2000;
-    left: 0;  top: 0;
+    left: 0; 
+    top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.8);
     backdrop-filter: blur(5px);
 }
 
-.modal_content{
+.modal_content {
     background-color: var(--gray);
     color: var(--typical-yellow);
     margin: 10% auto;
@@ -295,15 +305,17 @@ a{
     border-radius: 12px;
 }
 
-.close_modal{
+.close_modal {
     position: absolute;
-    right: 20px; top: 10px;
+    right: 20px; 
+    top: 10px;
     color: var(--typical-yellow);
     font-size: 30px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.close_modal:hover{
+
+.close_modal:hover {
     color: var(--bright-yellow);
     transform: scale(1.1);
 }
@@ -313,14 +325,16 @@ a{
     border-radius: 8px;
 }
 
-.reg_form, .log_form{
+.reg_form, 
+.log_form {
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: 20px;
 }
 
-.reg_form input, .log_form input{
+.reg_form input, 
+.log_form input {
     background: var(--black);
     border: 1px solid rgba(198, 156, 109, 0.3);
     padding: 12px;
@@ -328,7 +342,7 @@ a{
     outline: none;
 }
 
-.btn_submit{
+.btn_submit {
     background-color: var(--typical-yellow);
     color: var(--black);
     border: none;
@@ -338,38 +352,34 @@ a{
     border-radius: 12px;
 }
 
-.reg_switch{
+.reg_switch {
     margin-top: 20px;
     font-size: 14px;
     color: rgba(224, 228, 204, 0.6);
 }
 
-.reg_switch a{
+.reg_switch a {
     color: var(--typical-yellow);
-    text-decoration: none;
 }
 
-.fade-out {
-    animation: fadeOut 0.4s ease forwards;
-    pointer-events: none;
-}
-
-/* Calendar modal */
-
-.custom_calendar_modal{
+/* 
+   # COMPONENT: INLINE RANGE CUSTOM CALENDAR ENGINE
+*/
+.custom_calendar_modal {
     display: none;
     position: absolute;
     z-index: 20;
-    left: 0; top: 0;
+    left: 0; 
+    top: 0;
     width: 100%;
     height: 100%;
 }
 
-.custom_calendar_modal.active{
+.custom_calendar_modal.active {
     display: block;
 }
 
-.calendar_box{
+.calendar_box {
     background-color: var(--gray);
     color: var(--white);
     border: 1px solid var(--typical-yellow);
@@ -392,7 +402,7 @@ a{
     transition: color 0.3s ease;
 }
 
-.calendar_header{
+.calendar_header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -400,7 +410,7 @@ a{
     padding-top: 18px;
 }
 
-.calendar_header button{
+.calendar_header button {
     background: transparent;
     border: 1px solid var(--bright-yellow);
     color: var(--typical-yellow);
@@ -409,7 +419,7 @@ a{
     border-radius: 50%;
 }
 
-.calendar_header h3{
+.calendar_header h3 {
     margin: 0;
     color: var(--bright-yellow);
     font-size: 1.1rem;
@@ -417,7 +427,7 @@ a{
     letter-spacing: 1px;
 }
 
-.calendar_weekdays{
+.calendar_weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     text-align: center;
@@ -427,7 +437,7 @@ a{
     margin-bottom: 10px;
 }
 
-.calendar_days_grid{
+.calendar_days_grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
@@ -452,6 +462,7 @@ a{
     cursor: not-allowed;
 }
 
+/* Restricted booked date blocks styling */
 .calendar_day.booked_day {
     background-color: rgba(255, 77, 77, 0.15);
     color: #ff4d4d;
@@ -459,6 +470,7 @@ a{
     cursor: not-allowed;
 }
 
+/* Active range select state highlight anchor */
 .calendar_day.selected_range {
     background-color: var(--typical-yellow) !important;
     color: var(--black) !important;
@@ -475,7 +487,8 @@ a{
 }
 
 .legend_item {
-    width: 12px; height: 12px;
+    width: 12px; 
+    height: 12px;
     border-radius: 3px;
     display: inline-block;
     gap: 8px;
@@ -483,9 +496,9 @@ a{
 .legend_item.booked { background-color: rgba(255, 77, 77, 0.4); }
 .legend_item.selected { background-color: var(--typical-yellow); }
 
-
-/* Checkout modal */
-
+/* 
+   # COMPONENT: CHECKOUT INVOICE OVERLAY VIEW MANAGEMENT
+*/
 .checkout_content {
     max-width: 450px;
     width: 100%;
@@ -544,7 +557,7 @@ a{
     margin-bottom: 25px;
 }
 
-
+/* Styled Payment Radios Grid Layouts */
 .pay_option {
     display: flex;
     align-items: center;
@@ -582,7 +595,6 @@ a{
     border-color: var(--bright-yellow);
 }
 
-
 .pay_option input[type="radio"]:checked {
     border-color: var(--typical-yellow);
     background: transparent;
@@ -618,9 +630,9 @@ a{
     margin-top: 5px;
 }
 
-
-/* Booking modal */
-
+/* 
+   # COMPONENT: DETAILED USER BOOKINGS HISTORY CARDS VIEW
+*/
 .booking_details {
     text-align: left;
 }
@@ -637,12 +649,12 @@ a{
     line-height: 1.3;
 }
 
-.offer_link_title{
+.offer_link_title {
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.offer_link_title:hover{
+.offer_link_title:hover {
     transform: scale(1.1);
 }
 
@@ -655,6 +667,7 @@ a{
     font-size: 15px;
     color: #b0b0b0;
 }
+
 .modal_dates_badge img {
     width: 18px;
     height: 18px;
@@ -666,8 +679,7 @@ a{
     gap: 10px;
     border-bottom: 2px solid var(--typical-yellow);
     padding-bottom: 10px;
-    margin-bottom: 12px;
-    margin-top: 12px;
+    margin: 12px 0;
 }
 
 .card_card_header img {
@@ -710,7 +722,7 @@ a{
 
 .info_meta_group span {
     font-size: 18px;
-    color:  var(--white);
+    color: var(--white);
 }
 
 .card_footer_price {
@@ -733,11 +745,11 @@ a{
     color: #4caf50;
 }
 
-.modal_actions{
+.modal_actions {
     margin-top: 20px;
 }
 
-.btn_cancel_booking{
+.btn_cancel_booking {
     width: 100%;
     background: #3a1d1d;
     border: 1px solid #5a2727;
@@ -750,49 +762,44 @@ a{
     transition: all 0.2s ease;
 }
 
-.btn_cancel_booking:hover{
-    color: #ff6b6b;
-}
-
-.copy_target{
+.copy_target {
     cursor: pointer;
 }
+
 .copy_target:hover {
     color: var(--bright-yellow);
 }
 
-/* New Offer modal */
-
+/* 
+   # MODULE: NEW HOUSING / TRANSPORT OFFER INGESTION MANIFEST PANEL
+*/
 #new_offer_modal .modal_content {
-    background-color: var(--gray) !important;
-    color: var(--typical-yellow) !important;
+    background-color: var(--gray);
+    color: var(--typical-yellow);
     border: 1px solid var(--typical-yellow);
     border-radius: 16px;
-    
-    max-width: 580px !important; 
+    max-width: 580px;
     width: 90%;
-    
-    margin: 4vh auto !important;
-    
-    max-height: 90vh !important; 
-    
+    margin: 4vh auto;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
-    padding: 25px !important;
+    padding: 25px;
     box-sizing: border-box;
     position: relative;
-    text-align: left !important;
+    text-align: left;
 }
 
 #new_offer_modal .modal_title {
     font-size: 24px;
     font-weight: 700;
-    color: var(--bright-yellow) !important;
+    color: var(--bright-yellow);
     margin-top: 0;
     margin-bottom: 20px;
     flex-shrink: 0;
 }
 
+/* Scrollable Multi-Step Inner Forms Body */
 #new_offer_modal form {
     overflow-y: auto;
     padding-right: 8px;
@@ -800,8 +807,7 @@ a{
     display: flex;
     flex-direction: column;
     gap: 4px;
-    
-    -webkit-overflow-scrolling: touch; 
+    -webkit-overflow-scrolling: touch;
 }
 
 #new_offer_modal form::-webkit-scrollbar {
@@ -823,20 +829,21 @@ a{
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(198, 156, 109, 0.15);
     border-radius: 12px;
-    padding: 16px !important;
-    margin-bottom: 12px !important;
+    padding: 16px;
+    margin-bottom: 12px;
     box-sizing: border-box;
 }
 
+/* Shared Inputs Forms Controls */
 #new_offer_modal input[type="text"],
 #new_offer_modal input[type="number"],
 #new_offer_modal select,
 #new_offer_modal textarea {
-    background-color: var(--black) !important;
-    border: 1px solid rgba(198, 156, 109, 0.3) !important;
-    color: var(--white) !important;
-    padding: 10px 12px !important;
-    border-radius: 10px !important;
+    background-color: var(--black);
+    border: 1px solid rgba(198, 156, 109, 0.3);
+    color: var(--white);
+    padding: 10px 12px;
+    border-radius: 10px;
     font-size: 14px;
     width: 100%;
     box-sizing: border-box;
@@ -849,8 +856,8 @@ a{
 #new_offer_modal input:focus,
 #new_offer_modal select:focus,
 #new_offer_modal textarea:focus {
-    border-color: var(--bright-yellow) !important;
-    box-shadow: 0 0 8px rgba(244, 197, 144, 0.2) !important;
+    border-color: var(--bright-yellow);
+    box-shadow: 0 0 8px rgba(244, 197, 144, 0.2);
 }
 
 #new_offer_modal textarea {
@@ -865,22 +872,23 @@ a{
     background-image: url("data:image/svg+xml;utf8,<svg fill='%23C69C6D' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
-    padding-right: 40px !important;
+    padding-right: 40px;
 }
 
 #new_offer_modal .grid_2_columns {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    gap: 15px !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 15px;
 }
 
 #new_offer_modal .grid_2_columns .info_meta_group {
-    flex: 1 !important;
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
 
+/* Custom Amenity Feature Checkboxes Pill Layouts */
 #new_offer_modal .pay_option {
     margin-top: 22px;
     height: 40px;
@@ -933,10 +941,11 @@ a{
     border-color: var(--typical-yellow);
 }
 
+/* Binary Files Upload Presentation Layer Nodes */
 #new_offer_modal input[type="file"] {
-    background: transparent !important;
-    border: none !important;
-    padding: 5px 0 !important;
+    background: transparent;
+    border: none;
+    padding: 5px 0;
     cursor: pointer;
 }
 
@@ -970,6 +979,9 @@ a{
     flex-shrink: 0;
 }
 
+/*
+   # KEYFRAMES CORE ANIMATIONS LAYERS
+*/
 #new_offer_modal .info_card[style*="display: block"] {
     animation: fadeIn 0.3s ease forwards;
 }
@@ -980,18 +992,12 @@ a{
 }
 
 @keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(10px);
-    }
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(10px); }
 }
 
 @keyframes shake {
-    0%, 100% {transform: translateX(0);}
-    25% {transform: translateX(-5px);}
-    75% {transform: translateX(5px);}
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }

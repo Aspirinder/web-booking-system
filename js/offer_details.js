@@ -22,7 +22,7 @@ document.getElementById('footer_root_placeholder').innerHTML = commonComponents.
 initCommonUI();
 
 // Check user authorization token silently on page load
-const isLoggedIn = checkUserSession();
+checkUserSession();
 
 // Instantiate global authentications and checkout payment structures
 window.modalManager = new ModalManager('log_form', 'reg_form', 'checkout_payment_form', '');

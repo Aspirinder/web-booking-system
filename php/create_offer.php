@@ -36,11 +36,12 @@ try {
     $primaryPhoto = !empty($data['images']) ? $data['images'][0] : 'https://i.ibb.co/4ZD757xf/no-image.png';
 
     // Step 2: Ingest primary offer profile tracking record
-    $sqlOffer = "INSERT INTO offers (`user_id`, `category`, `name`, `price`, `img`, `country`, `city`, `description`, `rating`)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, '4.0')";
+    $sqlOffer = "INSERT INTO offers (`user_id`, `category`, `name`, `price`, `img`, `country`, `city`, `description`, `contact_email`, `contact_phone`, `rating`)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '4.0')";
     
     $stmtO = $conn->prepare($sqlOffer);
-    $stmtO->bind_param("issdssss", $hostUserId, $data['category'], $data['name'], $data['price'], $primaryPhoto, $data['country'], $data['city'], $data['description']);
+    $stmtO->bind_param("issdssssss", $hostUserId, $data['category'], $data['name'], $data['price'], 
+        $primaryPhoto, $data['country'], $data['city'], $data['description'], $data['email'], $data['phone']);
     $stmtO->execute();
 
     // Capture auto-increment identity key pointer downstream

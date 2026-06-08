@@ -21,12 +21,9 @@ document.getElementById('footer_root_placeholder').innerHTML = commonComponents.
 
 initCommonUI();
 // Authenticate User Session
-checkUserSession().then(isLoggedIn => {
-    if(!isLoggedIn){
-        window.location.href = 'index.html';
-        //throw new Error("Execution stopped: Unauthorized user.");
-}
-});
+checkUserSession().then(session => {
+    //throw new Error("Execution stopped: Unauthorized user.");
+    if(!session) window.location.href = 'index.html';});
 loadUserProfile();
 
 window.modalManager = new ModalManager('', '', '', 'booking_details_form');

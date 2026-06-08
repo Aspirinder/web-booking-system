@@ -11,6 +11,8 @@ const countryInput = document.getElementById('country_input');
 const cityInput = document.getElementById('city_input');
 const descriptionInput = document.getElementById('description_input');
 const benefitsContainer = document.getElementById('benefits_checkboxes_container');
+const contactEmailInput = document.getElementById('email_input');
+const contactPhonelInput = document.getElementById('phone_input');
 
 // Inject Common UI Into Placeholders
 document.getElementById('header_placeholder').innerHTML = commonComponents.header;
@@ -18,11 +20,12 @@ document.getElementById('menubar_placeholder').innerHTML = commonComponents.menu
 document.getElementById('footer_root_placeholder').innerHTML = commonComponents.footerRoot;
 
 // Authenticate User Session
-checkUserSession().then(isLoggedIn => {
-    if(!isLoggedIn){
+checkUserSession().then(session => {
+    if(!session){
         window.location.href = 'index.html';
         throw new Error("Execution stopped: Unauthorized user.");
-}
+    }
+    contactEmailInput.value = session.email;
 });
 
 
@@ -128,6 +131,8 @@ offerForm.addEventListener('submit', async(e) => {
             description: descriptionInput.value,
             images: uploadedImageUrls,
             benefits: finalizedBenefitsArray,
+            email: contactEmailInput.value.trim(),
+            phone: contactPhonelInput.value.trim() || null,
             details: isHousingCategory ? {
                 street: document.getElementById('street_input').value,
                 house_number: document.getElementById('house_number_input').value,
